@@ -383,6 +383,7 @@
       <p id="writerModalBio"></p>
       <p id="writerModalRelation"></p>
       <div class="modalSources" id="writerModalSources"></div>
+      <button class="btn" id="modalMapBtn" type="button" hidden style="margin-top:18px">Sakarya Türküsü'nü haritada gör ↗</button>
     </div>
   </div>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -454,12 +455,19 @@
         a.textContent = source[0] + " ↗";
         sourceBox.appendChild(a);
       });
+      const mapButton = document.getElementById("modalMapBtn");
+      mapButton.hidden = id !== "necip";
       writerModal.classList.add("open");
     }
     document.querySelectorAll("[data-writer]").forEach(function (button) {
       button.addEventListener("click", function () { openWriter(button.dataset.writer); });
     });
     document.getElementById("openNecip").addEventListener("click", function () { openWriter("necip"); });
+    document.getElementById("modalMapBtn").addEventListener("click", function () {
+      writerModal.classList.remove("open");
+      document.getElementById("harita").scrollIntoView({ behavior: "smooth" });
+      window.setTimeout(focusRiver, 450);
+    });
     document.getElementById("modalClose").addEventListener("click", function () { writerModal.classList.remove("open"); });
     writerModal.addEventListener("click", function (event) {
       if (event.target === writerModal) writerModal.classList.remove("open");
