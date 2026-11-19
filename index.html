@@ -86,7 +86,7 @@ let records=[],map=null,markers=new Map(),userMarker=null,watchId=null,activeTyp
 function toast(msg){$('toast').textContent=msg;$('toast').classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>$('toast').classList.remove('show'),4000)}
 const SUPABASE_URL='https://nxtfvzfadzlhxlyaluqx.supabase.co';
 const SUPABASE_KEY='sb_publishable_ZAw-F-eim4ndSJLTKsbyDw__xnLYmCh';
-const supabase=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const supabase=window.supabase?.createClient?window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY):null;
 let remoteRecordIds=[];
 let isAdmin=false;
 async function loadRecords(){
@@ -133,6 +133,7 @@ function renderAdminRecords(){const el=$('adminRecords');if(!el)return;el.innerH
 async function openAdminLogin(){
   $('adminLogin').classList.add('open');
   $('loginStatus').textContent='GitHub hesabınla giriş yapabilirsin.';
+  if(!supabase){$('loginStatus').textContent='Giriş servisi yüklenemedi. Sayfayı yenileyip tekrar dene.';return;}
   const {data:{session}}=await supabase.auth.getSession();
   if(session)await verifyAdmin(session.user);
 }
@@ -150,6 +151,7 @@ async function verifyAdmin(user){
 }
 $('adminEntry').addEventListener('click',openAdminLogin);
 $('githubLogin').addEventListener('click',async()=>{
+  if(!supabase){$('loginStatus').textContent='Giriş servisi yüklenemedi. Sayfayı yenileyip tekrar dene.';return;}
   $('loginStatus').textContent='GitHub giriş sayfasına yönlendiriliyorsun…';
   const {error}=await supabase.auth.signInWithOAuth({provider:'github',options:{redirectTo:window.location.href}});
   if(error)$('loginStatus').textContent='Giriş başlatılamadı: '+error.message;
@@ -157,7 +159,7 @@ $('githubLogin').addEventListener('click',async()=>{
 $('loginCancel').addEventListener('click',()=>$('adminLogin').classList.remove('open'));
 $('adminLogin').addEventListener('click',e=>{if(e.target===$('adminLogin'))$('adminLogin').classList.remove('open')});
 $('logoutAdmin').addEventListener('click',async()=>{await supabase.auth.signOut();isAdmin=false;$('icerik').style.display='none';$('adminPanel').classList.remove('open');toast('Oturum kapatıldı.');});
-supabase.auth.onAuthStateChange((event,session)=>{if(session)setTimeout(()=>verifyAdmin(session.user),0);else{isAdmin=false;$('icerik').style.display='none';$('adminPanel').classList.remove('open');}});
+if(supabase)supabase.auth.onAuthStateChange((event,session)=>{if(session)setTimeout(()=>verifyAdmin(session.user),0);else{isAdmin=false;$('icerik').style.display='none';$('adminPanel').classList.remove('open');}});
 (async()=>{await loadRecords();renderList();initMap();updateStats();})();
 document.querySelectorAll('[data-author]').forEach(card=>card.addEventListener('click',()=>{
   const author=card.dataset.author;
