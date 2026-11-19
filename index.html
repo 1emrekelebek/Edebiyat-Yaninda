@@ -68,9 +68,10 @@ footer{padding:25px 0;border-top:1px solid var(--line);font-size:10px;color:var(
 </main>
 <footer><div class="wrap foot"><div><b style="font:700 16px var(--serif);color:var(--brown)">Edebiyat Yanı Başında</b><br>Bir şehri, satırların izinde keşfet.</div><div>© 2026 · Sakarya pilot sürümü<br><button class="footerAdmin" id="adminEntry" type="button">Yönetici girişi</button></div></div></footer>
 <div class="modalBack" id="modalBack"><article class="modal" role="dialog" aria-modal="true"><button class="close" id="closeModal" aria-label="Kapat">×</button><div class="meta" id="modalMeta"></div><h3 id="modalTitle"></h3><p id="modalDescription"></p><div class="source" id="modalSource"></div><div style="margin-top:12px"><button class="favBtn" id="favoriteBtn" type="button">☆ Keşiflerime kaydet</button></div><div class="adminActions" id="modalAdmin" hidden><button class="btn secondary" id="editRecord">Kaydı düzenle</button><button class="btn danger" id="deleteRecord">Kaydı sil</button></div></article></div>
-<div class="adminLogin" id="adminLogin"><div class="loginCard"><h3>Yönetici girişi</h3><p>Yönetim alanı ziyaretçilere kapalıdır. Güvenli GitHub girişi henüz sunucu tarafında yapılandırılmadığı için bu sürümde yönetim işlemleri devre dışıdır.</p><p class="notice">GitHub OAuth ve ortak veritabanı bağlandığında yalnızca yetkilendirilmiş GitHub hesabı yönetim alanına erişebilecek.</p><div class="loginActions"><button class="btn secondary" id="loginCancel" type="button">Kapat</button></div></div></div>
+<div class="adminLogin" id="adminLogin"><div class="loginCard"><h3>Yönetici girişi</h3><p>Yönetim alanına devam etmek için GitHub hesabınla giriş yap.</p><p class="notice" id="loginStatus">Yalnızca yetkilendirilmiş hesaplar yönetim alanına erişebilir.</p><div class="loginActions"><button class="btn" id="githubLogin" type="button">GitHub ile giriş yap</button><button class="btn secondary" id="loginCancel" type="button">Kapat</button></div></div></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 'use strict';
 const starterRecords=[
@@ -83,8 +84,32 @@ const $=id=>document.getElementById(id);
 const escapeHTML=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let records=[],map=null,markers=new Map(),userMarker=null,watchId=null,activeType='Tümü',query='',selectedId=null,editingId=null;
 function toast(msg){$('toast').textContent=msg;$('toast').classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>$('toast').classList.remove('show'),4000)}
-function loadRecords(){try{const saved=JSON.parse(localStorage.getItem('eyb-records')||'null');records=Array.isArray(saved)?saved:starterRecords.map(x=>({...x}));}catch(e){records=starterRecords.map(x=>({...x}));}}
-function saveRecords(){try{localStorage.setItem('eyb-records',JSON.stringify(records));}catch(e){toast('Tarayıcı kayıt alanına yazılamadı.');}}
+const SUPABASE_URL='https://nxtfvzfadzlhxlyaluqx.supabase.co';
+const SUPABASE_KEY='sb_publishable_ZAw-F-eim4ndSJLTKsbyDw__xnLYmCh';
+const supabase=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+let remoteRecordIds=[];
+let isAdmin=false;
+async function loadRecords(){
+  records=starterRecords.map(x=>({...x}));
+  try{
+    const {data,error}=await supabase.from('literary_records').select('*');
+    if(error)throw error;
+    remoteRecordIds=(data||[]).map(x=>x.id);
+    records=records.concat((data||[]).map(x=>({...x,sample:false})));
+  }catch(e){console.error(e);toast('Ortak kayıtlar yüklenemedi: '+e.message);}
+}
+async function saveRecords(){
+  try{
+    localStorage.setItem('eyb-records',JSON.stringify(records));
+    if(!isAdmin)return;
+    const custom=records.filter(r=>!r.sample).map(r=>({id:String(r.id),title:r.title,author:r.author,type:r.type,place:r.place,lat:Number(r.lat),lng:Number(r.lng),description:r.description,source:r.source||null,accuracy:r.accuracy||null,year:r.year||null,excerpt:r.excerpt||null,sample:false}));
+    if(custom.length){const {error}=await supabase.from('literary_records').upsert(custom,{onConflict:'id'});if(error)throw error;}
+    const current=new Set(custom.map(r=>r.id));
+    const removed=remoteRecordIds.filter(id=>!current.has(id));
+    if(removed.length){const {error}=await supabase.from('literary_records').delete().in('id',removed);if(error)throw error;}
+    remoteRecordIds=custom.map(r=>r.id);
+  }catch(e){console.error(e);toast('Veritabanına kaydedilemedi: '+e.message);}
+}
 function filtered(){return records.filter(r=>(activeType==='Tümü'||r.type===activeType)&&[r.title,r.author,r.place,r.type].join(' ').toLocaleLowerCase('tr').includes(query.toLocaleLowerCase('tr')))}
 function renderList(){const arr=filtered();$('count').textContent=arr.length;$('records').innerHTML=arr.length?arr.map(r=>`<button class="record ${selectedId===r.id?'selected':''}" data-id="${escapeHTML(r.id)}"><span class="symbol">${r.type==='Şiir'?'✦':r.type==='Öykü'?'❝':'▤'}</span><span><b>${escapeHTML(r.title)}</b><small>${escapeHTML(r.author)} · ${escapeHTML(r.type)}</small></span></button>`).join(''):'<p class="hint">Aramana uygun kayıt bulunamadı.</p>';$('records').querySelectorAll('[data-id]').forEach(b=>b.addEventListener('click',()=>openRecord(b.dataset.id,true)));}
 function renderMarkers(){if(!map)return;markers.forEach(m=>map.removeLayer(m));markers.clear();filtered().forEach(r=>{const icon=L.divIcon({className:'',html:`<div style="width:29px;height:29px;border:2px solid white;border-radius:50% 50% 50% 7px;transform:rotate(-45deg);background:${r.type==='Şiir'?'#9a7053':r.type==='Öykü'?'#687b62':'#8b657b'};box-shadow:0 3px 10px #0004"></div>`,iconSize:[29,29],iconAnchor:[14,27]});const m=L.marker([Number(r.lat),Number(r.lng)],{icon}).addTo(map).bindPopup(`<b>${escapeHTML(r.title)}</b><br>${escapeHTML(r.author)}<br><small>${r.sample?'Temsilî konum · doğrulama gerekli':'Kullanıcı kaydı'}</small>`);m.on('click',()=>openRecord(r.id,false));markers.set(r.id,m);});}
@@ -105,11 +130,35 @@ function getFavorites(){try{return JSON.parse(localStorage.getItem('eyb-favorite
 function setFavorites(a){localStorage.setItem('eyb-favorites',JSON.stringify(a));$('statFavorites').textContent=a.length}
 function updateStats(){$('statRecords').textContent=records.length;$('statAuthors').textContent=new Set(records.map(r=>r.author)).size;$('statFavorites').textContent=getFavorites().length}
 function renderAdminRecords(){const el=$('adminRecords');if(!el)return;el.innerHTML=records.map(r=>`<div style="display:flex;justify-content:space-between;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line);font-size:11px"><span><b>${escapeHTML(r.title)}</b><br><small>${escapeHTML(r.author)} · ${escapeHTML(r.place)}</small></span><span>${r.sample?'<small>Örnek kayıt</small>':`<button class="chip" data-admin-edit="${escapeHTML(r.id)}">Düzenle</button>`}</span></div>`).join('');el.querySelectorAll('[data-admin-edit]').forEach(b=>b.addEventListener('click',()=>{selectedId=b.dataset.adminEdit;editSelected()}))}
-async function openAdminLogin(){$('adminLogin').classList.add('open')}
+async function openAdminLogin(){
+  $('adminLogin').classList.add('open');
+  $('loginStatus').textContent='GitHub hesabınla giriş yapabilirsin.';
+  const {data:{session}}=await supabase.auth.getSession();
+  if(session)await verifyAdmin(session.user);
+}
+async function verifyAdmin(user){
+  const {data,error}=await supabase.from('site_admins').select('user_id').eq('user_id',user.id).maybeSingle();
+  if(error){$('loginStatus').textContent='Yetki kontrolü yapılamadı: '+error.message;return;}
+  if(!data){$('loginStatus').textContent='GitHub girişi başarılı; ancak bu hesap henüz yönetici olarak yetkilendirilmemiş. Kullanıcı kimliği: '+user.id;return;}
+  isAdmin=true;
+  $('adminLogin').classList.remove('open');
+  $('icerik').style.display='block';
+  $('adminPanel').classList.add('open');
+  await loadRecords();renderList();renderMarkers();renderAdminRecords();updateStats();
+  $('icerik').scrollIntoView({behavior:'smooth'});
+  toast('Yönetici girişi başarılı.');
+}
 $('adminEntry').addEventListener('click',openAdminLogin);
+$('githubLogin').addEventListener('click',async()=>{
+  $('loginStatus').textContent='GitHub giriş sayfasına yönlendiriliyorsun…';
+  const {error}=await supabase.auth.signInWithOAuth({provider:'github',options:{redirectTo:window.location.href}});
+  if(error)$('loginStatus').textContent='Giriş başlatılamadı: '+error.message;
+});
 $('loginCancel').addEventListener('click',()=>$('adminLogin').classList.remove('open'));
 $('adminLogin').addEventListener('click',e=>{if(e.target===$('adminLogin'))$('adminLogin').classList.remove('open')});
-loadRecords();renderList();initMap();updateStats();
+$('logoutAdmin').addEventListener('click',async()=>{await supabase.auth.signOut();isAdmin=false;$('icerik').style.display='none';$('adminPanel').classList.remove('open');toast('Oturum kapatıldı.');});
+supabase.auth.onAuthStateChange((event,session)=>{if(session)setTimeout(()=>verifyAdmin(session.user),0);else{isAdmin=false;$('icerik').style.display='none';$('adminPanel').classList.remove('open');}});
+(async()=>{await loadRecords();renderList();initMap();updateStats();})();
 document.querySelectorAll('[data-author]').forEach(card=>card.addEventListener('click',()=>{
   const author=card.dataset.author;
   $('search').value=author;query=author;activeType='Tümü';
