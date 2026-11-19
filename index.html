@@ -105,6 +105,8 @@ const starterRecords=[
 {id:'necati-mert',title:'Necati Mert ve Adapazarı · araştırma kaydı',author:'Necati Mert',type:'Öykü',place:'Adapazarı · şehir ölçeği',lat:40.775,lng:30.395,description:'Adapazarı’nı ele alan hikâye ve yazılar taranmalı; belirli bir sokak veya yapı ancak metin kanıtı bulunduğunda haritaya eklenmelidir.',source:'Eser adı, baskı ve sayfa bilgisi doğrulama aşamasındadır.',accuracy:'area',excerpt:'',sample:true}
 ];
 const $=id=>document.getElementById(id);
+// Yönetici girişini diğer arayüz kodlarından bağımsız ve erken bağla.
+document.addEventListener('click',event=>{const trigger=event.target.closest('#adminEntry');if(trigger){event.preventDefault();openAdminLogin();}});
 const escapeHTML=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let records=[],map=null,markers=new Map(),userMarker=null,watchId=null,activeType='Tümü',query='',selectedId=null,editingId=null;
 function toast(msg){$('toast').textContent=msg;$('toast').classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>$('toast').classList.remove('show'),4000)}
@@ -284,7 +286,7 @@ async function verifyAdmin(user){
     toast('Yönetici girişi başarılı.');
   }catch(e){$('loginStatus').textContent='Yönetici yetkisi kontrol edilemedi: '+(e.message||String(e));}
 }
-$('adminEntry').addEventListener('click',openAdminLogin);
+
 $('exportData').addEventListener('click',()=>{
   const payload={schemaVersion:2,exportedAt:new Date().toISOString(),records:records.filter(r=>!r.sample)};
   downloadFile('edebiyat-yani-basinda-yedek.json',JSON.stringify(payload,null,2),'application/json;charset=utf-8');
