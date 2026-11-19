@@ -124,7 +124,13 @@ async function loadRecords(){
     const {data,error}=await supabase.from('literary_records').select('*');
     if(error)throw error;
     remoteRecordIds=(data||[]).map(x=>String(x.id));
-    records=records.concat((data||[]).map(x=>({...x,sample:false,status:cleanStatus(x.status)})));
+    records=records.concat((data||[]).map(x=>({
+      ...x,sample:false,status:cleanStatus(x.status),
+      sourceTitle:x.source_title||'',sourceAuthor:x.source_author||'',
+      publisher:x.publisher||'',editionYear:x.edition_year||'',
+      pageReference:x.page_reference||'',sourceUrl:x.source_url||'',
+      locationNote:x.location_note||''
+    })));
     return true;
   }catch(e){console.error(e);toast('Ortak kayıtlar yüklenemedi: '+e.message);return false;}
 }
@@ -179,7 +185,7 @@ function resetForm(){editingId=null;$('recordForm').reset();$('status').value='d
 function editSelected(){
   const r=records.find(x=>x.id===selectedId);if(!r||r.sample)return;
   editingId=r.id;
-  const fields={title:'title',author:'author',type:'type',place:'place',lat:'lat',lng:'lng',description:'description',source:'source',accuracy:'accuracy',year:'year',excerpt:'excerpt',sourceTitle:'source_title',sourceAuthor:'source_author',publisher:'publisher',editionYear:'edition_year',pageReference:'page_reference',sourceUrl:'source_url',locationNote:'location_note',status:'status'};
+  const fields={title:'title',author:'author',type:'type',place:'place',lat:'lat',lng:'lng',description:'description',source:'source',accuracy:'accuracy',year:'year',excerpt:'excerpt',sourceTitle:'sourceTitle',sourceAuthor:'sourceAuthor',publisher:'publisher',editionYear:'editionYear',pageReference:'pageReference',sourceUrl:'sourceUrl',locationNote:'locationNote',status:'status'};
   Object.entries(fields).forEach(([id,key])=>$(id).value=r[key]??(id==='accuracy'?'approx':id==='status'?'published':''));
   $('saveBtn').textContent='Değişiklikleri kaydet';$('cancelEdit').hidden=false;
   $('icerik').scrollIntoView({behavior:'smooth'});
@@ -331,7 +337,7 @@ $('importData').addEventListener('change',async e=>{
       if(!r||!r.title||!r.author||!r.place||!r.description)return;
       const lat=Number(r.lat),lng=Number(r.lng);if(!Number.isFinite(lat)||!Number.isFinite(lng)||lat<-90||lat>90||lng<-180||lng>180)return;
       let id=String(r.id||'');if(!id||knownSamples.has(id))id='json-'+Date.now()+'-'+i;
-      byId.set(id,{...r,id,lat,lng,sample:false,status:cleanStatus(r.status)});
+      byId.set(id,{...r,id,lat,lng,sample:false,status:allowedStatuses.includes(r.status)?r.status:'draft'});
       accepted++;
     });
     if(!accepted)throw new Error('Yedekten alınabilecek geçerli kayıt bulunamadı.');
