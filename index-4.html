@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f6f1e8">
+<meta name="description" content="Sakarya'nın edebî izlerini harita üzerinde keşfet.">
+<title>Edebiyat Yanı Başında — Sakarya'nın edebî izleri</title>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<link rel="preconnect" href="https://tile.openstreetmap.org" crossorigin>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap');
+:root{--paper:#f6f1e8;--paper2:#eee6d9;--ink:#302922;--muted:#786f65;--brown:#704d38;--rust:#ad684b;--line:#ded4c6;--green:#566c58;--white:#fffdf8;--shadow:0 14px 38px #3f2e1f16;--serif:'Playfair Display',Georgia,serif;--sans:'DM Sans',Arial,sans-serif}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.6 var(--sans)}button,input,textarea,select{font:inherit}button{cursor:pointer}a{color:inherit;text-decoration:none}.wrap{width:min(1160px,calc(100% - 36px));margin:auto}
+.top{background:#322a24;color:#e9dfd2;padding:8px 0;font-size:10px;letter-spacing:.13em;text-transform:uppercase}.top .wrap{display:flex;justify-content:space-between}
+header{position:sticky;top:0;z-index:900;background:#f6f1e8ed;backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}.nav{height:70px;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{font:700 20px var(--serif);color:var(--brown)}.brand small{display:block;font:600 9px var(--sans);letter-spacing:.17em;text-transform:uppercase;color:var(--muted)}.links{display:flex;gap:25px;font-size:12px;font-weight:700;color:#63584e}.links a:hover{color:var(--rust)}.menu{display:none}
+.hero{padding:70px 0;background:radial-gradient(ellipse at 85% 10%,#b78b642b,transparent 36%),linear-gradient(110deg,#f6f1e8,#f1e8dc)}.heroGrid{display:grid;grid-template-columns:1fr .9fr;gap:40px;align-items:center}.kicker{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--rust);font-weight:700}.hero h1{font:600 clamp(42px,5vw,65px)/1.06 var(--serif);letter-spacing:-.04em;margin:17px 0}.hero h1 em{color:var(--rust)}.hero p{max-width:550px;color:var(--muted);line-height:1.9}.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}.btn{border:0;border-radius:999px;background:var(--brown);color:white;padding:12px 18px;font-size:12px;font-weight:700;display:inline-flex;align-items:center;justify-content:center}.btn.secondary{background:transparent;color:var(--brown);border:1px solid #cdbba8}.art{height:330px;border-radius:22px;background:linear-gradient(145deg,#87927b,#435d50);box-shadow:var(--shadow);position:relative;overflow:hidden;display:flex;align-items:end;padding:28px;color:white}.art:before,.art:after{content:"";position:absolute;border:1px solid #ffffff55;border-radius:50%;width:480px;height:200px;left:-40px;top:45px;transform:rotate(-18deg)}.art:after{top:105px;left:80px}.art strong{font:28px var(--serif);position:relative}
+section{padding:65px 0;scroll-margin-top:85px}.sectionHead{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:25px}.sectionHead h2{font:600 clamp(30px,4vw,42px)/1.15 var(--serif);margin:8px 0 0}.sectionHead p{max-width:420px;color:var(--muted);font-size:12px;margin:0}
+.atlas{background:var(--white);border:1px solid var(--line);border-radius:20px;overflow:hidden;box-shadow:var(--shadow)}.atlasTop{padding:16px 20px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;align-items:center;font-size:12px;font-weight:700}.tag{background:#f0e9df;border-radius:30px;padding:6px 10px;color:var(--muted);font-size:9px;text-transform:uppercase;letter-spacing:.1em}
+.atlasBody{display:grid;grid-template-columns:310px 1fr;min-height:540px}.side{padding:18px;border-right:1px solid var(--line)}.search{width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;background:#fbf8f2;outline-color:var(--rust);font-size:12px}.filters{display:flex;gap:6px;flex-wrap:wrap;margin:14px 0}.chip{border:1px solid var(--line);background:transparent;border-radius:30px;padding:7px 10px;font-size:10px;color:var(--muted)}.chip.active{background:var(--brown);color:white;border-color:var(--brown)}.sideTitle{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:19px 0 9px}.locate{width:100%;padding:11px;border:1px solid #cdbba8;border-radius:10px;background:#f4eee5;color:var(--brown);font-size:11px;font-weight:700}.hint{font-size:10px;color:#8a7d70;line-height:1.5}.records{display:grid;gap:8px;margin-top:12px;max-height:245px;overflow:auto}.record{width:100%;text-align:left;border:1px solid #eee6dc;background:#fffdf8;border-radius:10px;padding:10px;display:flex;gap:10px;align-items:center}.record:hover,.record.selected{border-color:#bd9678;background:#fbf5ed}.record .symbol{width:34px;height:34px;flex:none;border-radius:9px;background:#eee4d7;display:grid;place-items:center;color:var(--brown)}.record b{display:block;font:600 13px var(--serif)}.record small{display:block;color:var(--muted);font-size:9px}
+.mapWrap{position:relative;height:560px;min-height:540px;overflow:hidden;background:#e5e3d8}.map{position:absolute;inset:0;width:100%;height:100%;min-height:540px}.mapFallback{display:none;position:absolute;inset:0;z-index:500;place-items:center;text-align:center;padding:30px;color:var(--muted)}.mapFallback b{display:block;font:24px var(--serif);color:var(--brown)}.mapTools{position:absolute;z-index:600;top:12px;left:12px;display:flex;gap:7px;flex-wrap:wrap}.mapTools button{border:1px solid var(--line);border-radius:9px;background:#fffdf8ed;padding:9px 11px;color:var(--brown);font-size:10px;font-weight:700}.mapNote{position:absolute;z-index:600;bottom:12px;left:12px;background:#fffdf8ed;border:1px solid var(--line);border-radius:9px;padding:8px 10px;font-size:9px;color:var(--muted);max-width:270px}
+.writers{background:#eee6da}.writerGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.writer{appearance:none;width:100%;text-align:left;font:inherit;color:inherit;background:#f8f4ed;border:1px solid var(--line);border-radius:14px;padding:18px;cursor:pointer;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}.writer:hover,.writer:focus-visible{transform:translateY(-3px);border-color:#bd9678;box-shadow:0 10px 24px #3f2e1f12;outline:none}.writer .initial{font:42px var(--serif);color:#a87858}.writer h3{font:600 18px var(--serif);margin:5px 0}.writer p{font-size:10px;color:var(--muted);margin:0}.writerMore{display:inline-block;margin-top:13px;font-size:10px;font-weight:700;color:var(--rust)}
+.admin{background:#fffdf8;border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:var(--shadow)}.adminGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.admin input,.admin textarea,.admin select{width:100%;padding:11px;border:1px solid var(--line);border-radius:9px;background:#fbf8f2;font-size:12px}.admin textarea{min-height:90px;resize:vertical}.admin label{font-size:10px;color:var(--muted);font-weight:700;display:grid;gap:5px}.admin .wide{grid-column:1/-1}.adminActions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.danger{background:#8c493d}.notice{font-size:10px;color:var(--muted);margin-top:10px}
+footer{padding:25px 0;border-top:1px solid var(--line);font-size:10px;color:var(--muted)}.foot{display:flex;justify-content:space-between;gap:15px}
+.modalBack{position:fixed;inset:0;background:#211a16a8;z-index:1200;display:none;align-items:center;justify-content:center;padding:18px}.modalBack.open{display:flex}.modal{width:min(540px,100%);background:var(--white);border-radius:17px;padding:24px;position:relative;max-height:90vh;overflow:auto}.close{position:absolute;right:14px;top:12px;border:1px solid var(--line);background:transparent;border-radius:50%;width:32px;height:32px}.modal h3{font:600 26px var(--serif);margin:6px 35px 10px 0}.meta{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--rust);font-weight:700}.modal p{font-size:13px;color:var(--muted);line-height:1.8}.modal .source{background:#f1ebe2;border-radius:10px;padding:12px;font-size:10px;color:#75695d}.toast{position:fixed;bottom:18px;left:50%;transform:translate(-50%,20px);opacity:0;pointer-events:none;z-index:1600;background:#352d27;color:white;border-radius:10px;padding:12px 16px;font-size:11px;max-width:calc(100% - 30px);transition:.2s}.toast.show{opacity:1;transform:translate(-50%,0)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:22px}.stat{background:#fffaf3;border:1px solid var(--line);border-radius:13px;padding:15px}.stat b{display:block;font:600 25px var(--serif);color:var(--brown)}.stat span{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+.featureGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.feature{border:1px solid var(--line);border-radius:15px;background:var(--white);padding:20px;min-height:180px}.feature .num{font:32px var(--serif);color:#b17b59}.feature h3{font:600 18px var(--serif);margin:8px 0}.feature p{font-size:11px;color:var(--muted);margin:0}.guide{background:#fffdf8;border:1px solid var(--line);border-radius:14px;padding:18px}.guide ol{padding-left:20px;color:var(--muted);font-size:12px}.guide li{margin:7px 0}.researchNote{border-left:3px solid var(--rust);padding:12px 16px;background:#f1e9df;color:#65584d;font-size:12px;border-radius:0 10px 10px 0}
+.footerAdmin{font-size:9px;color:#a79a8c;opacity:.72;border:0;background:none;padding:4px 0;text-decoration:underline;text-underline-offset:3px}.footerAdmin:hover{opacity:1;color:var(--brown)}
+.adminPanel{display:none;background:#fffdf8;border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:var(--shadow)}.adminPanel.open{display:block}.adminToolbar{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.adminToolbar button,.adminToolbar label{font-size:10px}.adminLogin{position:fixed;inset:0;z-index:1500;background:#241c16b8;display:none;align-items:center;justify-content:center;padding:18px}.adminLogin.open{display:flex}.loginCard{background:var(--white);width:min(390px,100%);border-radius:16px;padding:23px}.loginCard h3{font:600 24px var(--serif);margin:0 0 6px}.loginCard p{font-size:11px;color:var(--muted)}.loginCard input{width:100%;padding:12px;border:1px solid var(--line);border-radius:9px;margin:8px 0}.loginActions{display:flex;gap:8px;margin-top:10px}.favBtn{border:1px solid var(--line);background:#fffaf3;color:var(--brown);border-radius:30px;padding:8px 12px;font-size:10px;font-weight:700}.favBtn.saved{background:#f3e6d9;border-color:#c79d7c}
+.statusBadge{display:inline-flex;align-items:center;border-radius:30px;padding:3px 8px;font-size:9px;font-weight:700;white-space:nowrap}
+.statusBadge.draft{background:#f2e6e2;color:#8c493d}.statusBadge.ready{background:#f4ecd9;color:#80601f}.statusBadge.published{background:#e4eee4;color:#365d3c}
+.adminRecord{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);font-size:11px}
+.adminRecord small{display:block;color:var(--muted);margin-top:3px}
+.adminRecordActions{display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.adminRecordActions button{font-size:10px;padding:6px 10px}
+@media(max-width:650px){.featureGrid{grid-template-columns:1fr}.stats{gap:7px}.stat{padding:11px}.stat b{font-size:21px}}
+@media(max-width:850px){.heroGrid{grid-template-columns:1fr  .8fr;gap:20px}.atlasBody{grid-template-columns:280px 1fr}.writerGrid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:650px){.top .wrap span:last-child{display:none}.nav{height:62px}.links{display:none;position:absolute;top:62px;left:0;right:0;background:var(--paper);padding:18px;flex-direction:column;border-bottom:1px solid var(--line)}.links.open{display:flex}.menu{display:block;border:1px solid var(--line);background:transparent;border-radius:8px;padding:8px 11px}.hero{padding:42px 0}.heroGrid{grid-template-columns:1fr}.art{height:200px}.section{padding:48px 0}.sectionHead{display:block}.sectionHead p{margin-top:12px}.atlasBody{grid-template-columns:1fr}.side{border-right:0;border-bottom:1px solid var(--line)}.records{grid-template-columns:1fr 1fr;max-height:190px}.record{padding:8px;gap:7px}.record b{font-size:11px}.record small{font-size:8px}.mapWrap{height:460px;min-height:420px}.map{min-height:420px}.writerGrid{gap:9px}.writer{padding:13px}.adminGrid{grid-template-columns:1fr}.admin .wide{grid-column:auto}.foot{display:block}.foot div+div{margin-top:8px}}
+</style>
+</head>
+<body>
+<div class="top"><div class="wrap"><span>Sakarya'nın edebî izleri</span><span>Dijital edebiyat atlası · Pilot sürüm</span></div></div>
+<header><div class="wrap nav"><a class="brand" href="#">Edebiyat Yanı Başında<small>Şehrin içinde edebiyat</small></a><nav class="links" id="navLinks"><a href="#atlas">Harita</a><a href="#yazarlar">Yazarlar</a><a href="#rehber">Keşif rehberi</a><a href="#arastirma">Araştırma</a><a href="#proje">Proje</a></nav><button class="menu" id="menuBtn" aria-label="Menüyü aç">☰</button></div></header>
+<main>
+<section class="hero"><div class="wrap heroGrid"><div><div class="kicker">Bir şehri satırların izinde keşfet</div><h1>Edebiyat <em>yanı başında.</em></h1><p>Sakarya'yı şiirlerde, öykülerde ve romanlarda anlatıldığı yerlerden keşfet. Haritadaki bir kaydı seç, metnin mekânla kurduğu bağı incele.</p><div class="actions"><a class="btn" href="#atlas">Haritayı keşfet ↗</a><a class="btn secondary" href="#proje">Proje hakkında</a></div></div><div class="art"><strong>Sakarya'nın<br>edebî hafızası.</strong></div></div><div class="wrap"><div class="stats" aria-label="Atlas istatistikleri"><div class="stat"><b id="statRecords">0</b><span>Harita kaydı</span></div><div class="stat"><b id="statAuthors">0</b><span>Yazar / şair</span></div><div class="stat"><b id="statFavorites">0</b><span>Kaydedilen keşif</span></div></div></div></section>
+<section id="atlas"><div class="wrap"><div class="sectionHead"><div><div class="kicker">Edebî keşif haritası</div><h2>Metinlerin izini sür.</h2></div><p>Haritadaki kayıtlar araştırma adaylarıdır. Temsilî koordinatlar, kaynakla doğrulanana kadar kesin edebî mekân olarak kabul edilmez.</p></div>
+<div class="atlas"><div class="atlasTop"><span>⌖ Sakarya keşif atlası</span><span class="tag">OpenStreetMap · Leaflet</span></div><div class="atlasBody"><aside class="side"><input class="search" id="search" type="search" placeholder="Yazar, eser veya mekân ara…" aria-label="Kayıt ara"><div class="filters" id="filters"><button class="chip active" data-type="Tümü">Tümü</button><button class="chip" data-type="Şiir">Şiir</button><button class="chip" data-type="Öykü">Öykü</button><button class="chip" data-type="Roman / anı">Roman / anı</button></div><button class="locate" id="locate">◎ Konumumu bul</button><p class="hint">Konum izni yalnızca tarayıcıdan istenir. Konum özelliği için site HTTPS üzerinden açılmalıdır.</p><div class="sideTitle">Keşfedilecek kayıtlar · <span id="count">0</span></div><div class="records" id="records"></div></aside><div class="mapWrap"><div class="map" id="map" aria-label="Sakarya edebiyat haritası"></div><div class="mapFallback" id="mapFallback"><div><b>Harita yüklenemedi</b>İnternet bağlantını kontrol edip sayfayı yenile. Kayıt listesi kullanılabilir.</div></div><div class="mapTools"><button id="resetMap">⌖ Sakarya'ya dön</button><button id="fullMap">⛶ Tam ekran</button></div><div class="mapNote">Haritadaki koordinatlar araştırma tamamlanana kadar temsili olabilir.</div></div></div></div></div></section>
+<section class="writers" id="yazarlar"><div class="wrap"><div class="sectionHead"><div><div class="kicker">Sakarya'yı anlatan kalemler</div><h2>Şehrin edebî hafızası.</h2></div><p>Bu yazarlar, Sakarya ile edebî veya biyografik bağı araştırılan isimlerdir.</p></div><div class="writerGrid"><button type="button" class="writer" data-author="Sait Faik Abasıyanık"><span class="initial">SF</span><h3>Sait Faik Abasıyanık</h3><p>Öykü · Sakarya bağlantılı metinler</p><span class="writerMore">Kayıtları keşfet ↗</span></button><button type="button" class="writer" data-author="Faik Baysal"><span class="initial">FB</span><h3>Faik Baysal</h3><p>Roman · Eski Adapazarı hatıraları</p><span class="writerMore">Kayıtları keşfet ↗</span></button><button type="button" class="writer" data-author="Necip Fazıl Kısakürek"><span class="initial">NF</span><h3>Necip Fazıl Kısakürek</h3><p>Şiir · Sakarya Türküsü</p><span class="writerMore">Kayıtları keşfet ↗</span></button><button type="button" class="writer" data-author="Necati Mert"><span class="initial">NM</span><h3>Necati Mert</h3><p>Öykü · Adapazarı anlatıları</p><span class="writerMore">Kayıtları keşfet ↗</span></button></div></div></section>
+<section id="rehber"><div class="wrap"><div class="sectionHead"><div><div class="kicker">Atlası kullan</div><h2>Keşfe nereden başlamalı?</h2></div><p>Harita, edebî metinleri şehir coğrafyasıyla birlikte okumak için tasarlandı.</p></div><div class="featureGrid">
+<article class="feature"><div class="num">01</div><h3>Haritada ara</h3><p>Bir kayıt seç, haritadaki konumuna git. Tür filtreleriyle şiir, öykü ve roman kayıtlarını ayır.</p></article>
+<article class="feature"><div class="num">02</div><h3>Metni incele</h3><p>Kayıt penceresinde eser, yazar, mekân ilişkisi ve kaynak bilgisini birlikte değerlendir.</p></article>
+<article class="feature"><div class="num">03</div><h3>Kaynağı doğrula</h3><p>Bir mekânı kesin konum olarak sunmadan önce eserdeki ifadeyi, baskıyı ve sayfa numarasını kontrol et.</p></article>
+</div></div></section>
+<section id="arastirma" class="writers"><div class="wrap"><div class="sectionHead"><div><div class="kicker">Araştırma ilkeleri</div><h2>Her pinin arkasında bir kaynak.</h2></div><p>Atlasın güvenilirliği, haritadaki nokta sayısından çok edebî kanıtların niteliğine dayanır.</p></div><div class="guide"><ol><li><b>Birincil kaynak:</b> Öncelikle eserin kendisi ve güvenilir baskısı incelenir.</li><li><b>Sayfa kanıtı:</b> Mekânla ilgili ifade, sayfa numarasıyla kaydedilir. Telifli eserlerin uzun bölümleri izinsiz yayımlanmaz.</li><li><b>Konum doğruluğu:</b> Kesin koordinat, yaklaşık bölge ve nehir/şehir ölçeği birbirinden ayrılır.</li><li><b>Kaynakça:</b> Yazar, eser, yayınevi, baskı yılı ve sayfa bilgisi mümkün olduğunca eksiksiz tutulur.</li><li><b>Belirsizlik:</b> Kurmaca veya yeri kesinleşmeyen mekânlar açıkça belirtilir; temsili koordinat gerçek nokta gibi sunulmaz.</li></ol><div class="researchNote">Bu atlas bir araştırma aracıdır. İçerikler kaynak kontrolünden geçtikçe doğrulanmış kayıt statüsüne alınmalıdır.</div></div></div></section>
+<section id="icerik" style="display:none"><div class="wrap"><div class="sectionHead"><div><div class="kicker">Yönetim alanı</div><h2>Atlas kayıtlarını yönet.</h2></div><p>Yeni kayıt ekle, mevcut kayıtları düzenle, yedek al veya yedekten geri yükle.</p></div>
+<div class="adminPanel" id="adminPanel">
+<form id="recordForm"><div class="adminGrid">
+<label>Eser / kayıt başlığı<input id="title" required maxlength="100" placeholder="Örn. Sakarya Türküsü"></label>
+<label>Yazar<input id="author" required maxlength="100" placeholder="Yazar adı"></label>
+<label>Tür<select id="type"><option>Şiir</option><option>Öykü</option><option>Roman / anı</option><option>Deneme / gezi yazısı</option><option>Diğer</option></select></label>
+<label>Mekân adı<input id="place" required maxlength="120" placeholder="Örn. Sakarya Nehri"></label>
+<label>Enlem<input id="lat" type="number" step="any" min="-90" max="90" required placeholder="40.773"></label>
+<label>Boylam<input id="lng" type="number" step="any" min="-180" max="180" required placeholder="30.392"></label>
+<label>Konum doğruluğu<select id="accuracy"><option value="approx">Yaklaşık konum</option><option value="verified">Kaynakla doğrulandı</option><option value="area">Şehir / bölge ölçeği</option><option value="symbolic">Sembolik / temsili</option></select></label>
+<label>Yayın yılı (biliniyorsa)<input id="year" type="number" min="1000" max="2100" placeholder="Örn. 1950"></label>
+<label class="wide">Metin / mekân ilişkisi<textarea id="description" required maxlength="1600" placeholder="Eserin bu mekânla ilişkisini, metindeki kanıtı ve araştırma notunu yaz…"></textarea></label>
+<label class="wide">Kısa alıntı (isteğe bağlı, telif sınırlarına dikkat)<textarea id="excerpt" maxlength="240" placeholder="Yalnızca kısa ve gerekli bir alıntı ekle…"></textarea></label>
+<label class="wide">Kaynak ve araştırma notu<input id="source" maxlength="500" placeholder="Kaynakla ilgili ek notlar"></label>
+<label>Kaynak eser / yayın başlığı<input id="sourceTitle" maxlength="240" placeholder="Kitap veya makale adı"></label>
+<label>Kaynak yazarı / kurum<input id="sourceAuthor" maxlength="180" placeholder="Yazar, yayınevi veya kurum"></label>
+<label>Yayınevi / yayın bilgisi<input id="publisher" maxlength="240" placeholder="Yayınevi, dergi veya katalog"></label>
+<label>Kaynak yayın yılı<input id="editionYear" type="number" min="1000" max="2100" placeholder="Örn. 2018"></label>
+<label>Sayfa / bölüm bilgisi<input id="pageReference" maxlength="120" placeholder="Örn. s. 42–45"></label>
+<label>Kaynak bağlantısı<input id="sourceUrl" type="url" maxlength="1000" placeholder="https://..."></label>
+<label class="wide">Mekânın metindeki kanıtı<textarea id="locationNote" maxlength="1200" placeholder="Bu mekânı eserle ilişkilendiren ifade, bağlam ve konum gerekçesi…"></textarea></label>
+<label>Yayın durumu<select id="status"><option value="draft" selected>Taslak</option><option value="ready">İncelemeye hazır</option><option value="published">Yayımla</option></select></label>
+</div><div class="adminActions"><button class="btn" type="submit" id="saveBtn">Kaydı ekle</button><button class="btn secondary" type="button" id="cancelEdit" hidden>Vazgeç</button></div></form>
+<div class="adminToolbar">
+<button class="btn secondary" type="button" id="exportData">JSON yedeği indir</button>
+<label class="btn secondary" for="importData" style="display:inline-flex;align-items:center;cursor:pointer">JSON yedeğini yükle</label>
+<input id="importData" type="file" accept="application/json,.json" hidden>
+<button class="btn secondary" type="button" id="exportCSV">CSV dışa aktar</button>
+<button class="btn secondary" type="button" id="templateCSV">CSV şablonu indir</button>
+<label class="btn secondary" for="importCSV" style="display:inline-flex;align-items:center;cursor:pointer">CSV aktar</label>
+<input id="importCSV" type="file" accept=".csv,text/csv" hidden>
+<button class="btn secondary" type="button" id="logoutAdmin">Oturumu kapat</button>
+</div>
+<div class="notice">Kayıtlar ortak Supabase veritabanına kaydedilir. Taslaklar ve incelemeye hazır kayıtlar ziyaretçilere gösterilmez. CSV ile aktarılan yeni kayıtlar güvenlik için taslak başlar; JSON yedeği kayıt durumlarını korur.</div>
+<div id="importReport" class="notice" role="status" aria-live="polite"></div>
+<div class="sideTitle">Kayıt listesi</div><div id="adminRecords"></div></div></div></section>
+<section id="proje"><div class="wrap"><div class="sectionHead"><div><div class="kicker">Araştırma projesi</div><h2>Haritanın üzerinde değil,<br>şehrin içinde edebiyat.</h2></div><p>Bu dijital atlas, Sakarya'yı konu alan edebî metinlerdeki mekânları kaynaklarıyla inceleyip coğrafi verilerle eşleştirmeyi amaçlar. Belirsiz veya kurmaca mekânlar gerçek bir nokta gibi sunulmaz.</p></div></div></section>
+</main>
+<footer><div class="wrap foot"><div><b style="font:700 16px var(--serif);color:var(--brown)">Edebiyat Yanı Başında</b><br>Bir şehri, satırların izinde keşfet.</div><div>© 2026 · Sakarya pilot sürümü<br><button class="footerAdmin" id="adminEntry" type="button">Yönetici girişi</button></div></div></footer>
+<div class="modalBack" id="modalBack"><article class="modal" role="dialog" aria-modal="true"><button class="close" id="closeModal" aria-label="Kapat">×</button><div class="meta" id="modalMeta"></div><h3 id="modalTitle"></h3><p id="modalDescription"></p><div class="source" id="modalSource"></div><div style="margin-top:12px"><button class="favBtn" id="favoriteBtn" type="button">☆ Keşiflerime kaydet</button></div><div class="adminActions" id="modalAdmin" hidden><button class="btn secondary" id="editRecord">Kaydı düzenle</button><button class="btn danger" id="deleteRecord">Kaydı sil</button></div></article></div>
+<div class="adminLogin" id="adminLogin"><div class="loginCard"><h3>Yönetici girişi</h3><p>Yönetim alanına devam etmek için GitHub hesabınla giriş yap.</p><p class="notice" id="loginStatus">Yalnızca yetkilendirilmiş hesaplar yönetim alanına erişebilir.</p><div class="loginActions"><button class="btn" id="githubLogin" type="button">GitHub ile giriş yap</button><button class="btn secondary" id="loginCancel" type="button">Kapat</button></div></div></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+'use strict';
+const starterRecords=[
+{id:'sakarya-turkusu',title:'Sakarya Türküsü',author:'Necip Fazıl Kısakürek',type:'Şiir',place:'Sakarya Nehri · nehir ölçeği',lat:40.773,lng:30.392,description:'Şiir, Sakarya Nehri’ni merkezî bir imge olarak kullanır. Bu nedenle tek bir köprüye veya kıyı noktasına indirgenmemeli; nehir ölçeğinde ele alınmalıdır.',source:'Şiirin kullanılacak baskısı ve sayfa bilgisi araştırma sırasında eklenmelidir.',accuracy:'area',excerpt:'',sample:true},
+{id:'sait-faik',title:'Sait Faik ve Sakarya bağlantısı · araştırma kaydı',author:'Sait Faik Abasıyanık',type:'Öykü',place:'Sakarya / Adapazarı · geniş bölge',lat:40.779,lng:30.3905,description:'Hikâyenin gerçek coğrafi karşılığı ve belirli bir kıyı noktası, metin ve baskı üzerinden doğrulanmadan kesin koordinat olarak gösterilmemelidir.',source:'Mahalle Kahvesi kitabındaki hikâye başlığı; kullanılacak baskının sayfa bilgisi ayrıca doğrulanmalıdır.',accuracy:'symbolic',excerpt:'',sample:true},
+{id:'faik-baysal',title:'Faik Baysal ve Adapazarı · araştırma kaydı',author:'Faik Baysal',type:'Roman / anı',place:'Adapazarı · şehir ölçeği',lat:40.7775,lng:30.403,description:'Eski Adapazarı’na dair sokak ve şehir hatıraları araştırma adayıdır. Her yer, ilgili eserden sayfa kanıtı bulununca ayrı kayda dönüştürülmelidir.',source:'Birincil eser, baskı ve sayfa bilgisi doğrulanmalıdır.',accuracy:'area',excerpt:'',sample:true},
+{id:'necati-mert',title:'Necati Mert ve Adapazarı · araştırma kaydı',author:'Necati Mert',type:'Öykü',place:'Adapazarı · şehir ölçeği',lat:40.775,lng:30.395,description:'Adapazarı’nı ele alan hikâye ve yazılar taranmalı; belirli bir sokak veya yapı ancak metin kanıtı bulunduğunda haritaya eklenmelidir.',source:'Eser adı, baskı ve sayfa bilgisi doğrulama aşamasındadır.',accuracy:'area',excerpt:'',sample:true}
+];
+const $=id=>document.getElementById(id);
+// Yönetici girişini diğer arayüz kodlarından bağımsız ve erken bağla.
+document.addEventListener('click',event=>{const trigger=event.target.closest('#adminEntry');if(trigger){event.preventDefault();openAdminLogin();}});
+const escapeHTML=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let records=[],map=null,markers=new Map(),userMarker=null,watchId=null,activeType='Tümü',query='',selectedId=null,editingId=null;
+function toast(msg){$('toast').textContent=msg;$('toast').classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>$('toast').classList.remove('show'),4000)}
+const SUPABASE_URL='https://nxtfvzfadzlhxlyaluqx.supabase.co';
+const SUPABASE_KEY='sb_publishable_ZAw-F-eim4ndSJLTKsbyDw__xnLYmCh';
+const supabase=window.supabase?.createClient?window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY):null;
+let remoteRecordIds=[];
+let isAdmin=false;
+const allowedStatuses=['draft','ready','published'];
+const statusLabels={draft:'Taslak',ready:'İncelemeye hazır',published:'Yayımlandı'};
+const cleanStatus=v=>allowedStatuses.includes(v)?v:'published';
+const publicRecord=r=>!!r.sample||cleanStatus(r.status)==='published';
+async function loadRecords(){
+  records=starterRecords.map(x=>({...x,status:'published'}));
+  if(!supabase){toast('Ortak kayıt bağlantısı başlatılamadı.');return false;}
+  try{
+    const {data,error}=await supabase.from('literary_records').select('*');
+    if(error)throw error;
+    remoteRecordIds=(data||[]).map(x=>String(x.id));
+    records=records.concat((data||[]).map(x=>({
+      ...x,sample:false,status:cleanStatus(x.status),
+      sourceTitle:x.source_title||'',sourceAuthor:x.source_author||'',
+      publisher:x.publisher||'',editionYear:x.edition_year||'',
+      pageReference:x.page_reference||'',sourceUrl:x.source_url||'',
+      locationNote:x.location_note||''
+    })));
+    return true;
+  }catch(e){console.error(e);toast('Ortak kayıtlar yüklenemedi: '+e.message);return false;}
+}
+async function saveRecords(){
+  if(!isAdmin||!supabase){toast('Kayıt için yetkili yönetici oturumu gerekli.');return false;}
+  try{
+    const custom=records.filter(r=>!r.sample).map(r=>({
+      id:String(r.id),title:r.title,author:r.author,type:r.type,place:r.place,
+      lat:Number(r.lat),lng:Number(r.lng),description:r.description,
+      source:r.source||null,accuracy:r.accuracy||null,year:r.year||null,
+      excerpt:r.excerpt||null,sample:false,status:cleanStatus(r.status),
+      source_title:r.sourceTitle||null,source_author:r.sourceAuthor||null,
+      publisher:r.publisher||null,edition_year:r.editionYear?Number(r.editionYear):null,
+      page_reference:r.pageReference||null,source_url:r.sourceUrl||null,
+      location_note:r.locationNote||null
+    }));
+    if(custom.length){const {error}=await supabase.from('literary_records').upsert(custom,{onConflict:'id'});if(error)throw error;}
+    const current=new Set(custom.map(r=>r.id));
+    const removed=remoteRecordIds.filter(id=>!current.has(String(id)));
+    if(removed.length){const {error}=await supabase.from('literary_records').delete().in('id',removed);if(error)throw error;}
+    remoteRecordIds=custom.map(r=>r.id);
+    return true;
+  }catch(e){console.error(e);toast('Veritabanına kaydedilemedi: '+(e.message||String(e)));return false;}
+}
+function filtered(){return records.filter(r=>publicRecord(r)&&(activeType==='Tümü'||r.type===activeType)&&[r.title,r.author,r.place,r.type].join(' ').toLocaleLowerCase('tr').includes(query.toLocaleLowerCase('tr')))}
+function renderList(){const arr=filtered();$('count').textContent=arr.length;$('records').innerHTML=arr.length?arr.map(r=>`<button class="record ${selectedId===r.id?'selected':''}" data-id="${escapeHTML(r.id)}"><span class="symbol">${r.type==='Şiir'?'✦':r.type==='Öykü'?'❝':'▤'}</span><span><b>${escapeHTML(r.title)}</b><small>${escapeHTML(r.author)} · ${escapeHTML(r.type)}</small></span></button>`).join(''):'<p class="hint">Aramana uygun kayıt bulunamadı.</p>';$('records').querySelectorAll('[data-id]').forEach(b=>b.addEventListener('click',()=>openRecord(b.dataset.id,true)));}
+function renderMarkers(){if(!map)return;markers.forEach(m=>map.removeLayer(m));markers.clear();filtered().forEach(r=>{const icon=L.divIcon({className:'',html:`<div style="width:29px;height:29px;border:2px solid white;border-radius:50% 50% 50% 7px;transform:rotate(-45deg);background:${r.type==='Şiir'?'#9a7053':r.type==='Öykü'?'#687b62':'#8b657b'};box-shadow:0 3px 10px #0004"></div>`,iconSize:[29,29],iconAnchor:[14,27]});const m=L.marker([Number(r.lat),Number(r.lng)],{icon}).addTo(map).bindPopup(`<b>${escapeHTML(r.title)}</b><br>${escapeHTML(r.author)}<br><small>${r.sample?'Temsilî konum · doğrulama gerekli':'Kullanıcı kaydı'}</small>`);m.on('click',()=>openRecord(r.id,false));markers.set(r.id,m);});}
+function openRecord(id,pan){
+  const r=records.find(x=>x.id===id);if(!r||!publicRecord(r))return;
+  selectedId=id;renderList();
+  $('modalMeta').textContent=`${r.type} · ${r.author}`;
+  $('modalTitle').textContent=r.title;$('modalDescription').textContent=r.description;
+  const safeUrl=/^https?:\/\//i.test(String(r.sourceUrl||''))?String(r.sourceUrl):'';
+  $('modalSource').innerHTML=
+    `<b>Mekân:</b> ${escapeHTML(r.place)}<br><b>Konum durumu:</b> ${escapeHTML(({verified:'Kaynakla doğrulandı',approx:'Yaklaşık konum',area:'Şehir / bölge ölçeği',symbolic:'Sembolik / temsili'}[r.accuracy]||'Doğrulama bekliyor'))}${r.locationNote?`<br><b>Mekân kanıtı:</b> ${escapeHTML(r.locationNote)}`:''}
+    <br><b>Kaynak:</b> ${escapeHTML(r.source||'Kaynak bilgisi eklenmemiş.')}
+    ${r.sourceTitle?`<br><b>Kaynak başlığı:</b> ${escapeHTML(r.sourceTitle)}`:''}
+    ${r.sourceAuthor?`<br><b>Kaynak yazarı / kurum:</b> ${escapeHTML(r.sourceAuthor)}`:''}
+    ${r.publisher?`<br><b>Yayın bilgisi:</b> ${escapeHTML(r.publisher)}`:''}
+    ${r.editionYear?`<br><b>Baskı yılı:</b> ${escapeHTML(r.editionYear)}`:''}
+    ${r.pageReference?`<br><b>Sayfa / bölüm:</b> ${escapeHTML(r.pageReference)}`:''}
+    ${safeUrl?`<br><b>Kaynak bağlantısı:</b> <a href="${escapeHTML(safeUrl)}" target="_blank" rel="noopener noreferrer">${escapeHTML(safeUrl)}</a>`:''}
+    ${r.year?`<br><b>Eser yılı:</b> ${escapeHTML(r.year)}`:''}
+    ${r.excerpt?`<br><br><b>Kısa alıntı:</b> “${escapeHTML(r.excerpt)}”`:''}
+    ${r.sample?'<br><b>Uyarı:</b> Araştırma adayı; kesin koordinat değildir.':''}`;
+  $('modalAdmin').hidden=!!r.sample;$('favoriteBtn').classList.toggle('saved',getFavorites().includes(r.id));
+  $('favoriteBtn').textContent=getFavorites().includes(r.id)?'★ Keşiflerimden çıkar':'☆ Keşiflerime kaydet';
+  $('modalBack').classList.add('open');if(pan&&map){map.setView([r.lat,r.lng],15);markers.get(id)?.openPopup();}
+}
+function closeModal(){$('modalBack').classList.remove('open')}
+function resetForm(){editingId=null;$('recordForm').reset();$('status').value='draft';$('saveBtn').textContent='Taslağı kaydet';$('cancelEdit').hidden=true;}
+function editSelected(){
+  const r=records.find(x=>x.id===selectedId);if(!r||r.sample)return;
+  editingId=r.id;
+  const fields={title:'title',author:'author',type:'type',place:'place',lat:'lat',lng:'lng',description:'description',source:'source',accuracy:'accuracy',year:'year',excerpt:'excerpt',sourceTitle:'sourceTitle',sourceAuthor:'sourceAuthor',publisher:'publisher',editionYear:'editionYear',pageReference:'pageReference',sourceUrl:'sourceUrl',locationNote:'locationNote',status:'status'};
+  Object.entries(fields).forEach(([id,key])=>$(id).value=r[key]??(id==='accuracy'?'approx':id==='status'?'published':''));
+  $('saveBtn').textContent='Değişiklikleri kaydet';$('cancelEdit').hidden=false;
+  $('icerik').scrollIntoView({behavior:'smooth'});
+}
+function showMapError(title,detail){const box=$('mapFallback');box.style.display='grid';box.innerHTML='<div><b>'+escapeHTML(title)+'</b>'+escapeHTML(detail)+'</div>';}
+function loadLeaflet(){
+  if(window.L)return Promise.resolve(true);
+  const cssUrls=['https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css','https://unpkg.com/leaflet@1.9.4/dist/leaflet.css','https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css'];
+  if(!document.getElementById('leaflet-css')){
+    const link=document.createElement('link');link.id='leaflet-css';link.rel='stylesheet';link.href=cssUrls[0];
+    link.onerror=()=>{const next=cssUrls.find(u=>u!==link.href);if(next)link.href=next;};document.head.appendChild(link);
+  }
+  const jsUrls=['https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js','https://unpkg.com/leaflet@1.9.4/dist/leaflet.js','https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js'];
+  return new Promise(resolve=>{let i=0;const next=()=>{if(window.L){resolve(true);return;}if(i>=jsUrls.length){resolve(false);return;}const script=document.createElement('script');script.src=jsUrls[i++];script.crossOrigin='anonymous';script.onload=()=>resolve(!!window.L);script.onerror=()=>{script.remove();next();};document.head.appendChild(script);};next();});
+}
+function initMap(){
+  if(!window.L){showMapError('Harita kütüphanesi yüklenemedi','Bağlantı veya içerik engelleyici Leaflet dosyasına erişimi engelliyor. Sayfayı yenileyip tekrar deneyebilirsin.');return;}
+  try{
+    map=L.map('map',{scrollWheelZoom:true,preferCanvas:true}).setView([40.75,30.40],10);
+    const providers=[
+      {name:'OpenStreetMap',url:'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',opts:{subdomains:'abc',maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors'}},
+      {name:'CARTO',url:'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',opts:{subdomains:'abcd',maxZoom:20,attribution:'&copy; OpenStreetMap contributors &copy; CARTO'}},
+      {name:'Esri',url:'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',opts:{maxZoom:19,attribution:'Tiles &copy; Esri'}}
+    ];
+    let providerIndex=-1,activeLayer=null,errorCount=0,loadedCount=0,switched=false;
+    const activateProvider=(index)=>{
+      if(activeLayer)map.removeLayer(activeLayer);
+      providerIndex=index;errorCount=0;loadedCount=0;switched=false;
+      const p=providers[index];activeLayer=L.tileLayer(p.url,{...p.opts,crossOrigin:true});
+      activeLayer.on('tileload',()=>{loadedCount++;$('mapFallback').style.display='none';});
+      activeLayer.on('tileerror',()=>{errorCount++;if(errorCount>=4&&!switched){switched=true;if(providerIndex<providers.length-1)activateProvider(providerIndex+1);else showMapError('Harita döşemeleri yüklenemedi','Harita sağlayıcılarına erişilemiyor. İnternet bağlantını veya ağ engellerini kontrol et.');}});
+      activeLayer.addTo(map);
+      setTimeout(()=>{if(providerIndex===index&&loadedCount===0&&errorCount===0&&!switched){if(index<providers.length-1)activateProvider(index+1);else showMapError('Harita yüklenemedi','Harita sunucularından yanıt alınamadı. Biraz sonra tekrar deneyebilirsin.');}},8500);
+    };
+    activateProvider(0);
+    renderMarkers();L.control.scale({imperial:false}).addTo(map);
+    const resizeMap=()=>setTimeout(()=>map&&map.invalidateSize({pan:false}),180);
+    setTimeout(resizeMap,250);setTimeout(resizeMap,900);window.addEventListener('resize',resizeMap);
+    $('resetMap').addEventListener('click',()=>map.flyTo([40.775,30.397],12));
+    $('fullMap').addEventListener('click',()=>{const el=document.querySelector('.mapWrap');if(!document.fullscreenElement)el.requestFullscreen?.().then(resizeMap).catch(()=>toast('Tam ekran açılamadı.'));else document.exitFullscreen?.().then(resizeMap);});
+    document.addEventListener('fullscreenchange',resizeMap);
+  }catch(e){console.error('Harita başlatılamadı:',e);showMapError('Harita başlatılamadı','Teknik bir hata oluştu. Sayfayı yenileyip tekrar deneyebilirsin.');}
+}
+$('search').addEventListener('input',e=>{query=e.target.value;renderList();renderMarkers();});
+$('filters').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{activeType=b.dataset.type;$('filters').querySelectorAll('button').forEach(x=>x.classList.toggle('active',x===b));renderList();renderMarkers();}));
+$('locate').addEventListener('click',()=>{if(!navigator.geolocation){toast('Bu tarayıcı konum özelliğini desteklemiyor.');return;}if(!window.isSecureContext){toast('Konum izni için siteyi HTTPS üzerinden açmalısın.');return;}if(watchId!==null){navigator.geolocation.clearWatch(watchId);watchId=null;$('locate').textContent='◎ Konumumu bul';toast('Konum takibi durduruldu.');return;}$('locate').textContent='Konum aranıyor…';navigator.geolocation.getCurrentPosition(pos=>{const p=[pos.coords.latitude,pos.coords.longitude];if(!map){toast('Harita yüklenmedi; konum alınamadı.');return;}map.setView(p,15);if(userMarker)userMarker.setLatLng(p);else userMarker=L.circleMarker(p,{radius:9,color:'#fff',weight:3,fillColor:'#566c58',fillOpacity:1}).addTo(map).bindPopup('Şu anki konumun');userMarker.openPopup();$('locate').textContent='◎ Konum takibini durdur';toast('Konumun haritada gösterildi.');watchId=navigator.geolocation.watchPosition(next=>{const q=[next.coords.latitude,next.coords.longitude];userMarker?.setLatLng(q);},err=>toast('Konum güncellenemedi: '+err.message),{enableHighAccuracy:true,maximumAge:10000,timeout:20000});},err=>{$('locate').textContent='◎ Konumumu bul';const messages={1:'Konum izni verilmedi. Tarayıcı ayarlarından siteye konum izni ver.',2:'Konum bilgisi alınamadı. GPS ve internet bağlantını kontrol et.',3:'Konum isteği zaman aşımına uğradı. Yeniden dene.'};toast(messages[err.code]||err.message);},{enableHighAccuracy:true,maximumAge:0,timeout:20000});});
+$('recordForm').addEventListener('submit',async e=>{
+  e.preventDefault();
+  if(!isAdmin){toast('Bu işlem için yönetici girişi gerekli.');return;}
+  const item={
+    id:editingId||'user-'+Date.now(),title:$('title').value.trim(),author:$('author').value.trim(),
+    type:$('type').value,place:$('place').value.trim(),lat:Number($('lat').value),lng:Number($('lng').value),
+    description:$('description').value.trim(),source:$('source').value.trim(),accuracy:$('accuracy').value,
+    year:$('year').value.trim(),excerpt:$('excerpt').value.trim(),sample:false,status:cleanStatus($('status').value),
+    sourceTitle:$('sourceTitle').value.trim(),sourceAuthor:$('sourceAuthor').value.trim(),
+    publisher:$('publisher').value.trim(),editionYear:$('editionYear').value.trim(),
+    pageReference:$('pageReference').value.trim(),sourceUrl:$('sourceUrl').value.trim(),
+    locationNote:$('locationNote').value.trim()
+  };
+  if(!Number.isFinite(item.lat)||!Number.isFinite(item.lng)||item.lat<-90||item.lat>90||item.lng<-180||item.lng>180){toast('Geçerli enlem ve boylam gir.');return;}
+  if(item.sourceUrl&&!/^https?:\/\//i.test(item.sourceUrl)){toast('Kaynak bağlantısı http:// veya https:// ile başlamalı.');return;}
+  const hasSource=!!(item.source||item.sourceTitle||item.sourceUrl);
+  if(item.status!=='draft'&&!hasSource){toast('İncelemeye göndermek için en az bir kaynak bilgisi ekle.');return;}
+  const previous=records.slice(),wasEditing=!!editingId;
+  if(item.status==='published'){
+    const old=wasEditing?previous.find(r=>r.id===editingId):null;
+    if(!old||cleanStatus(old.status)!=='ready'){toast('Bir kaydı yayımlamadan önce ayrı olarak “İncelemeye hazır” durumuna kaydetmelisin.');return;}
+  }
+  if(wasEditing){const i=records.findIndex(r=>r.id===editingId);if(i>=0)records[i]=item;}else records.push(item);
+  $('saveBtn').disabled=true;
+  const saved=await saveRecords();
+  $('saveBtn').disabled=false;
+  if(!saved){records=previous;renderAdminRecords();return;}
+  resetForm();renderList();renderMarkers();renderAdminRecords();updateStats();
+  toast(wasEditing?'Kayıt güncellendi.':'Kayıt veritabanına kaydedildi.');
+});
+$('cancelEdit').addEventListener('click',resetForm);$('editRecord').addEventListener('click',editSelected);
+$('deleteRecord').addEventListener('click',async()=>{
+  const r=records.find(x=>x.id===selectedId);if(!r||r.sample||!isAdmin)return;
+  if(!confirm('Bu kaydı veritabanından silmek istediğine emin misin?'))return;
+  const previous=records.slice();records=records.filter(x=>x.id!==selectedId);
+  const saved=await saveRecords();if(!saved){records=previous;return;}
+  selectedId=null;closeModal();renderList();renderMarkers();renderAdminRecords();updateStats();toast('Kayıt silindi.');
+});
+$('closeModal').addEventListener('click',closeModal);$('modalBack').addEventListener('click',e=>{if(e.target===$('modalBack'))closeModal();});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+$('menuBtn').addEventListener('click',()=>$('navLinks').classList.toggle('open'));$('navLinks').querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>$('navLinks').classList.remove('open')));
+
+function getFavorites(){try{return JSON.parse(localStorage.getItem('eyb-favorites')||'[]')}catch(e){return []}}
+function setFavorites(a){localStorage.setItem('eyb-favorites',JSON.stringify(a));$('statFavorites').textContent=a.length}
+function updateStats(){
+  const visible=records.filter(publicRecord);
+  $('statRecords').textContent=visible.length;
+  $('statAuthors').textContent=new Set(visible.map(r=>r.author)).size;
+  $('statFavorites').textContent=getFavorites().length;
+}
+function renderAdminRecords(){
+  const el=$('adminRecords');if(!el)return;
+  el.innerHTML=records.map(r=>{
+    if(r.sample)return `<div class="adminRecord"><span><b>${escapeHTML(r.title)}</b><small>${escapeHTML(r.author)} · Örnek araştırma kaydı</small></span><span class="statusBadge published">Örnek</span></div>`;
+    const state=cleanStatus(r.status);
+    return `<div class="adminRecord"><span><b>${escapeHTML(r.title)}</b><small>${escapeHTML(r.author)} · ${escapeHTML(r.place)}</small></span><span class="adminRecordActions"><span class="statusBadge ${state}">${statusLabels[state]}</span><button class="chip" data-admin-edit="${escapeHTML(r.id)}">Düzenle</button><button class="chip" data-admin-delete="${escapeHTML(r.id)}" aria-label="${escapeHTML(r.title)} kaydını sil">Sil</button></span></div>`;
+  }).join('');
+  el.querySelectorAll('[data-admin-edit]').forEach(b=>b.addEventListener('click',()=>{selectedId=b.dataset.adminEdit;editSelected()}));
+  el.querySelectorAll('[data-admin-delete]').forEach(b=>b.addEventListener('click',async()=>{
+    const id=b.dataset.adminDelete;
+    if(!confirm('Bu kaydı veritabanından silmek istediğine emin misin?'))return;
+    const previous=records.slice();records=records.filter(r=>String(r.id)!==String(id));
+    const saved=await saveRecords();
+    if(!saved){records=previous;renderAdminRecords();return;}
+    renderAdminRecords();renderList();renderMarkers();updateStats();toast('Kayıt silindi.');
+  }));
+}
+async function openAdminLogin(){
+  $('adminLogin').classList.add('open');
+  $('loginStatus').textContent='GitHub hesabınla giriş yapabilirsin.';
+  if(!supabase){$('loginStatus').textContent='Giriş servisi yüklenemedi. Sayfayı yenileyip tekrar dene.';return;}
+  try{
+    const {data,error}=await supabase.auth.getSession();if(error)throw error;
+    if(data.session)await verifyAdmin(data.session.user);
+  }catch(e){$('loginStatus').textContent='Oturum kontrol edilemedi: '+(e.message||String(e));}
+}
+async function verifyAdmin(user){
+  try{
+    const {data,error}=await supabase.from('site_admins').select('user_id').eq('user_id',user.id).maybeSingle();
+    if(error)throw error;
+    if(!data){$('loginStatus').textContent='GitHub girişi başarılı; ancak bu hesap henüz yönetici olarak yetkilendirilmemiş. Kullanıcı kimliği: '+user.id;return;}
+    isAdmin=true;
+    $('adminLogin').classList.remove('open');
+    $('icerik').style.display='block';$('adminPanel').classList.add('open');
+    const loaded=await loadRecords();
+    if(!loaded){toast('Yönetici paneli açıldı fakat katalog verileri yüklenemedi.');return;}
+    renderList();renderMarkers();renderAdminRecords();updateStats();
+    $('icerik').scrollIntoView({behavior:'smooth'});
+    toast('Yönetici girişi başarılı.');
+  }catch(e){$('loginStatus').textContent='Yönetici yetkisi kontrol edilemedi: '+(e.message||String(e));}
+}
+
+$('exportData').addEventListener('click',()=>{
+  const payload={schemaVersion:2,exportedAt:new Date().toISOString(),records:records.filter(r=>!r.sample)};
+  downloadFile('edebiyat-yani-basinda-yedek.json',JSON.stringify(payload,null,2),'application/json;charset=utf-8');
+});
+$('exportCSV').addEventListener('click',()=>downloadCSV(records.filter(r=>!r.sample),'edebiyat-yani-basinda-kayitlar.csv'));
+$('templateCSV').addEventListener('click',()=>downloadCSV([],'edebiyat-yani-basinda-sablon.csv'));
+$('importCSV').addEventListener('change',async e=>{
+  const file=e.target.files&&e.target.files[0];e.target.value='';if(!file)return;
+  try{
+    const rows=parseCSV(await file.text());if(rows.length<2)throw new Error('CSV dosyasında başlık ve en az bir kayıt satırı bulunmalı.');
+    const headers=rows.shift().map(x=>String(x||'').trim().toLowerCase());
+    const get=(row,key)=>{const i=headers.indexOf(key);return i<0?'':String(row[i]??'').trim();};
+    const previous=records.slice(),knownSamples=new Set(starterRecords.map(x=>x.id));
+    const imported=[],errors=[];
+    rows.forEach((row,i)=>{
+      if(!row.some(x=>String(x||'').trim()))return;
+      const title=get(row,'title'),author=get(row,'author'),place=get(row,'place'),description=get(row,'description');
+      const lat=Number(get(row,'lat')),lng=Number(get(row,'lng'));
+      if(!title||!author||!place||!description||!Number.isFinite(lat)||!Number.isFinite(lng)||lat<-90||lat>90||lng<-180||lng>180){errors.push((i+2)+'. satır: başlık, yazar, mekân, açıklama ve geçerli koordinatlar gerekli.');return;}
+      let id=get(row,'id');if(!id||knownSamples.has(id))id='csv-'+Date.now()+'-'+i;
+      imported.push({
+        id,title,author,type:get(row,'type')||'Diğer',place,lat,lng,description,
+        source:get(row,'source'),accuracy:['verified','approx','area','symbolic'].includes(get(row,'accuracy'))?get(row,'accuracy'):'approx',
+        year:get(row,'year'),excerpt:get(row,'excerpt'),sample:false,status:'draft',
+        sourceTitle:get(row,'source_title'),sourceAuthor:get(row,'source_author'),publisher:get(row,'publisher'),
+        editionYear:get(row,'edition_year'),pageReference:get(row,'page_reference'),sourceUrl:get(row,'source_url'),
+        locationNote:get(row,'location_note')
+      });
+    });
+    if(!imported.length)throw new Error('Geçerli kayıt bulunamadı. '+errors.slice(0,3).join(' '));
+    const byId=new Map(records.filter(r=>!r.sample).map(r=>[String(r.id),r]));
+    imported.forEach(r=>byId.set(String(r.id),r));
+    records=[...starterRecords.map(x=>({...x,status:'published'})),...byId.values()];
+    const saved=await saveRecords();
+    if(!saved){records=previous;throw new Error('Veritabanına kaydedilemedi; mevcut kayıtlar geri yüklendi.');}
+    renderList();renderMarkers();renderAdminRecords();updateStats();
+    $('importReport').textContent=imported.length+' kayıt taslak olarak aktarıldı.'+(errors.length?' Atlanan satır: '+errors.length+'. '+errors.slice(0,3).join(' '):'');
+    toast(imported.length+' kayıt CSV ile aktarıldı.');
+  }catch(err){$('importReport').textContent='CSV aktarımı başarısız: '+(err.message||String(err));toast('CSV dosyası aktarılamadı.');}
+});
+$('importData').addEventListener('change',async e=>{
+  const file=e.target.files&&e.target.files[0];e.target.value='';if(!file)return;
+  try{
+    const parsed=JSON.parse(await file.text()),items=Array.isArray(parsed)?parsed:parsed.records;
+    if(!Array.isArray(items))throw new Error('Yedek dosyasında records listesi bulunamadı.');
+    const previous=records.slice(),knownSamples=new Set(starterRecords.map(x=>x.id));
+    const byId=new Map(records.filter(r=>!r.sample).map(r=>[String(r.id),r]));
+    let accepted=0;
+    items.forEach((r,i)=>{
+      if(!r||!r.title||!r.author||!r.place||!r.description)return;
+      const lat=Number(r.lat),lng=Number(r.lng);if(!Number.isFinite(lat)||!Number.isFinite(lng)||lat<-90||lat>90||lng<-180||lng>180)return;
+      let id=String(r.id||'');if(!id||knownSamples.has(id))id='json-'+Date.now()+'-'+i;
+      byId.set(id,{...r,id,lat,lng,sample:false,status:allowedStatuses.includes(r.status)?r.status:'draft'});
+      accepted++;
+    });
+    if(!accepted)throw new Error('Yedekten alınabilecek geçerli kayıt bulunamadı.');
+    records=[...starterRecords.map(x=>({...x,status:'published'})),...byId.values()];
+    const saved=await saveRecords();
+    if(!saved){records=previous;throw new Error('Veritabanına kaydedilemedi; mevcut kayıtlar geri yüklendi.');}
+    renderList();renderMarkers();renderAdminRecords();updateStats();
+    $('importReport').textContent=accepted+' kayıt JSON yedeğinden geri yüklendi.';
+    toast('JSON yedeği geri yüklendi.');
+  }catch(err){$('importReport').textContent='Yedek yüklenemedi: '+(err.message||String(err));toast('JSON yedeği yüklenemedi.');}
+});
+function downloadFile(name,content,type){
+  const blob=new Blob([content],{type}),url=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+const CSV_FIELDS=['id','title','author','type','place','lat','lng','description','source','source_title','source_author','publisher','edition_year','page_reference','source_url','location_note','accuracy','year','excerpt','status'];
+function csvCell(v){const s=String(v??'');return /[",\r\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s;}
+function downloadCSV(items,name){
+  const rows=[CSV_FIELDS.join(','),...items.map(r=>[
+    r.id,r.title,r.author,r.type,r.place,r.lat,r.lng,r.description,r.source,r.sourceTitle||r.source_title,
+    r.sourceAuthor||r.source_author,r.publisher,r.editionYear||r.edition_year,r.pageReference||r.page_reference,
+    r.sourceUrl||r.source_url,r.locationNote||r.location_note,r.accuracy,r.year,r.excerpt,cleanStatus(r.status)
+  ].map(csvCell).join(','))];
+  downloadFile(name,'\ufeff'+rows.join('\r\n'),'text/csv;charset=utf-8');
+}
+function parseCSV(input){
+  const textValue=String(input||'').replace(/^\uFEFF/,'');
+  const rows=[];let row=[],cell='',quoted=false;
+  for(let i=0;i<textValue.length;i++){
+    const ch=textValue[i],next=textValue[i+1];
+    if(quoted){if(ch==='"'&&next==='"'){cell+='"';i++;}else if(ch==='"'){quoted=false;}else cell+=ch;}
+    else if(ch==='"'&&cell==='')quoted=true;
+    else if(ch===','){row.push(cell);cell='';}
+    else if(ch==='\n'){row.push(cell.replace(/\r$/,''));rows.push(row);row=[];cell='';}
+    else cell+=ch;
+  }
+  if(cell.length||row.length){row.push(cell.replace(/\r$/,''));rows.push(row);}
+  return rows;
+}
+$('githubLogin').addEventListener('click',async()=>{
+  const button=$('githubLogin');
+  if(!supabase){$('loginStatus').textContent='Supabase giriş kütüphanesi yüklenemedi. Sayfayı yenile veya bağlantını kontrol et.';return;}
+  button.disabled=true;
+  $('loginStatus').textContent='GitHub giriş sayfasına yönlendiriliyorsun…';
+  try{
+    const {data,error}=await supabase.auth.signInWithOAuth({provider:'github',options:{redirectTo:window.location.href}});
+    if(error)throw error;
+    if(data?.url)window.location.assign(data.url);
+    else $('loginStatus').textContent='Giriş isteği gönderildi; yönlendirme bekleniyor.';
+  }catch(e){
+    $('loginStatus').textContent='GitHub girişi başlatılamadı: '+(e.message||String(e));
+    button.disabled=false;
+  }
+});
+$('loginCancel').addEventListener('click',()=>$('adminLogin').classList.remove('open'));
+$('adminLogin').addEventListener('click',e=>{if(e.target===$('adminLogin'))$('adminLogin').classList.remove('open')});
+$('logoutAdmin').addEventListener('click',async()=>{await supabase.auth.signOut();isAdmin=false;$('icerik').style.display='none';$('adminPanel').classList.remove('open');toast('Oturum kapatıldı.');});
+if(supabase)supabase.auth.onAuthStateChange((event,session)=>{if(session)setTimeout(()=>verifyAdmin(session.user),0);else{isAdmin=false;$('icerik').style.display='none';$('adminPanel').classList.remove('open');}});
+(async()=>{await loadRecords();renderList();const ready=await loadLeaflet();if(ready)initMap();else showMapError('Harita kütüphanesi yüklenemedi','Leaflet üç farklı kaynaktan da yüklenemedi. İnternet bağlantısını veya içerik engelleyiciyi kontrol et.');updateStats();})();
+document.querySelectorAll('[data-author]').forEach(card=>card.addEventListener('click',()=>{
+  const author=card.dataset.author;
+  $('search').value=author;query=author;activeType='Tümü';
+  $('filters').querySelectorAll('button').forEach(b=>b.classList.toggle('active',b.dataset.type==='Tümü'));
+  renderList();renderMarkers();
+  $('atlas').scrollIntoView({behavior:'smooth'});
+  const first=filtered()[0];
+  if(first){selectedId=first.id;renderList();if(map)map.setView([first.lat,first.lng],13);}
+}));
+</script>
+</body>
+</html>
