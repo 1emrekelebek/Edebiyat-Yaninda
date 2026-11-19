@@ -205,6 +205,7 @@
         <a href="#harita">Edebî harita</a>
         <a href="#yazarlar">Yazarlar</a>
         <a href="#yontem">Araştırma yöntemi</a>
+        <button type="button" id="openSources" class="textLink" style="border:0;background:transparent;font:inherit;cursor:pointer">Kaynakça ↗</button>
         <a href="#proje" class="navCta">Proje hakkında ↗</a>
       </nav>
       <button class="menuBtn" id="menuBtn" aria-label="Menüyü aç" aria-expanded="false">☰</button>
@@ -357,12 +358,7 @@
         <div>
           <p class="aboutText"><strong>Edebiyat Yanı Başında</strong>, Sakarya'nın edebî eserlerdeki izlerini mekânsal bilgilerle bir araya getirmeyi amaçlayan bir TÜBİTAK 2204-A araştırma projesidir. Hedefimiz, okurun bir şehri yalnızca sokaklarıyla değil, o sokaklara ve doğal çevreye anlam kazandıran metinlerle de tanımasını sağlamaktır.</p>
           <p class="aboutText">Bu ilk sürüm, projenin görsel ve teknik temelidir. İlerleyen aşamalarda yönetici paneli, ortak veri tabanı, tarihî fotoğraf arşivi, yeni yazar ve mekân kayıtları ile kullanıcı konumuna dayalı yakınlık özellikleri eklenecektir.</p>
-          <div class="sourceList">
-            <a class="sourceItem" href="https://www.sakarya.gov.tr/sakarya-nehri" target="_blank" rel="noopener noreferrer"><strong>Sakarya Valiliği · Sakarya Nehri</strong><span>Nehir ve Sakarya Türküsü bağlantısı ↗</span></a>
-            <a class="sourceItem" href="https://dergipark.org.tr/tr/pub/kusbd/article/501698" target="_blank" rel="noopener noreferrer"><strong>Sadi Gedik · Sakarya Türküsü incelemesi</strong><span>Kırıkkale Üniversitesi Sosyal Bilimler Dergisi ↗</span></a>
-            <a class="sourceItem" href="https://ataturkansiklopedisi.gov.tr/detay/206/Sait-Faik-Abas%C4%B1yan%C4%B1k-%281906-1954%29-" target="_blank" rel="noopener noreferrer"><strong>Atatürk Ansiklopedisi · Sait Faik</strong><span>Biyografi ve Adapazarı bilgisi ↗</span></a>
-            <a class="sourceItem" href="https://dahiti.dgfi.tum.de/en/24006/" target="_blank" rel="noopener noreferrer"><strong>DAHITI · Sakarya Nehri</strong><span>Temsili harita referans noktası ↗</span></a>
-          </div>
+          <p class="aboutText">Araştırmada kullanılan akademik yayınlar, resmî kurum sayfaları ve biyografi kaynaklarının tamamına üst menüdeki <strong>Kaynakça</strong> bağlantısından ulaşabilirsin.</p>
         </div>
       </div>
     </section>
@@ -384,6 +380,21 @@
       <p id="writerModalRelation"></p>
       <div class="modalSources" id="writerModalSources"></div>
       <button class="btn" id="modalMapBtn" type="button" hidden style="margin-top:18px">Sakarya Türküsü'nü haritada gör ↗</button>
+    </div>
+  </div>
+  <div class="modalBack" id="sourcesModal" role="dialog" aria-modal="true" aria-labelledby="sourcesTitle">
+    <div class="modal">
+      <button class="modalClose" id="sourcesClose" type="button" aria-label="Kapat">×</button>
+      <div class="eyebrow">Araştırma kaynakları</div>
+      <h2 id="sourcesTitle">Kaynakça</h2>
+      <p>Projede kullanılan resmî, akademik ve biyografik kaynaklar. Bağlantılar yeni sekmede açılır.</p>
+      <div class="modalSources">
+        <a href="https://www.sakarya.gov.tr/sakarya-nehri" target="_blank" rel="noopener noreferrer">Sakarya Valiliği · Sakarya Nehri ↗</a>
+        <a href="https://dergipark.org.tr/tr/pub/kusbd/article/501698" target="_blank" rel="noopener noreferrer">Sadi Gedik · Sakarya Türküsü üzerine akademik inceleme ↗</a>
+        <a href="https://ataturkansiklopedisi.gov.tr/detay/206/Sait-Faik-Abas%C4%B1yan%C4%B1k-%281906-1954%29-" target="_blank" rel="noopener noreferrer">Atatürk Ansiklopedisi · Sait Faik Abasıyanık ↗</a>
+        <a href="https://islamansiklopedisi.org.tr/sait-faik-abasiyanik" target="_blank" rel="noopener noreferrer">TDV İslâm Ansiklopedisi · Sait Faik Abasıyanık ↗</a>
+        <a href="https://dahiti.dgfi.tum.de/en/24006/" target="_blank" rel="noopener noreferrer">DAHITI · Sakarya Nehri konum verisi ↗</a>
+      </div>
     </div>
   </div>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -473,7 +484,20 @@
       if (event.target === writerModal) writerModal.classList.remove("open");
     });
     document.addEventListener("keydown", function (event) {
-      if (event.key === "Escape") writerModal.classList.remove("open");
+      if (event.key === "Escape") {
+        writerModal.classList.remove("open");
+        document.getElementById("sourcesModal").classList.remove("open");
+      }
+    });
+    const sourcesModal = document.getElementById("sourcesModal");
+    document.getElementById("openSources").addEventListener("click", function () {
+      navLinks.classList.remove("open");
+      menuBtn.setAttribute("aria-expanded", "false");
+      sourcesModal.classList.add("open");
+    });
+    document.getElementById("sourcesClose").addEventListener("click", function () { sourcesModal.classList.remove("open"); });
+    sourcesModal.addEventListener("click", function (event) {
+      if (event.target === sourcesModal) sourcesModal.classList.remove("open");
     });
 
     let literaryMap = null;
@@ -512,11 +536,13 @@
         const dLon = (RIVER_POINT[0] - point[0]) * radians;
         const h = Math.sin(dLat / 2) ** 2 + Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) ** 2;
         const distance = 6371 * 2 * Math.atan2(Math.sqrt(h), Math.sqrt(1 - h));
-        mapStatus.textContent = "Konumun gösteriliyor · Nehir referans noktasına yaklaşık " + distance.toFixed(1) + " km";
+        const accuracy = Math.round(position.coords.accuracy || 0);
+        mapStatus.textContent = "Cihaz konumu · doğruluk payı yaklaşık " + accuracy + " m · Nehir referans noktasına " + distance.toFixed(1) + " km";
+        if (accuracy > 1000) showToast("Konum yaklaşık görünüyor. Bilgisayarın/telefonun konum hizmetlerini ve tarayıcı iznini kontrol et.");
       }, function (error) {
         mapStatus.textContent = "Konum alınamadı. Tarayıcı ayarlarından konum iznini kontrol et.";
         showToast(error.code === 1 ? "Konum izni verilmedi." : "Konum bilgisi şu anda alınamıyor.");
-      }, { enableHighAccuracy: true, timeout: 12000, maximumAge: 60000 });
+      }, { enableHighAccuracy: true, timeout: 20000, maximumAge: 0 });
     });
 
     function initMap() {
