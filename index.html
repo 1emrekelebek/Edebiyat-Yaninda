@@ -27,6 +27,12 @@ footer{padding:25px 0;border-top:1px solid var(--line);font-size:10px;color:var(
 .featureGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.feature{border:1px solid var(--line);border-radius:15px;background:var(--white);padding:20px;min-height:180px}.feature .num{font:32px var(--serif);color:#b17b59}.feature h3{font:600 18px var(--serif);margin:8px 0}.feature p{font-size:11px;color:var(--muted);margin:0}.guide{background:#fffdf8;border:1px solid var(--line);border-radius:14px;padding:18px}.guide ol{padding-left:20px;color:var(--muted);font-size:12px}.guide li{margin:7px 0}.researchNote{border-left:3px solid var(--rust);padding:12px 16px;background:#f1e9df;color:#65584d;font-size:12px;border-radius:0 10px 10px 0}
 .footerAdmin{font-size:9px;color:#a79a8c;opacity:.72;border:0;background:none;padding:4px 0;text-decoration:underline;text-underline-offset:3px}.footerAdmin:hover{opacity:1;color:var(--brown)}
 .adminPanel{display:none;background:#fffdf8;border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:var(--shadow)}.adminPanel.open{display:block}.adminToolbar{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.adminToolbar button,.adminToolbar label{font-size:10px}.adminLogin{position:fixed;inset:0;z-index:1500;background:#241c16b8;display:none;align-items:center;justify-content:center;padding:18px}.adminLogin.open{display:flex}.loginCard{background:var(--white);width:min(390px,100%);border-radius:16px;padding:23px}.loginCard h3{font:600 24px var(--serif);margin:0 0 6px}.loginCard p{font-size:11px;color:var(--muted)}.loginCard input{width:100%;padding:12px;border:1px solid var(--line);border-radius:9px;margin:8px 0}.loginActions{display:flex;gap:8px;margin-top:10px}.favBtn{border:1px solid var(--line);background:#fffaf3;color:var(--brown);border-radius:30px;padding:8px 12px;font-size:10px;font-weight:700}.favBtn.saved{background:#f3e6d9;border-color:#c79d7c}
+.statusBadge{display:inline-flex;align-items:center;border-radius:30px;padding:3px 8px;font-size:9px;font-weight:700;white-space:nowrap}
+.statusBadge.draft{background:#f2e6e2;color:#8c493d}.statusBadge.ready{background:#f4ecd9;color:#80601f}.statusBadge.published{background:#e4eee4;color:#365d3c}
+.adminRecord{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);font-size:11px}
+.adminRecord small{display:block;color:var(--muted);margin-top:3px}
+.adminRecordActions{display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.adminRecordActions button{font-size:10px;padding:6px 10px}
 @media(max-width:650px){.featureGrid{grid-template-columns:1fr}.stats{gap:7px}.stat{padding:11px}.stat b{font-size:21px}}
 @media(max-width:850px){.heroGrid{grid-template-columns:1fr  .8fr;gap:20px}.atlasBody{grid-template-columns:280px 1fr}.writerGrid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:650px){.top .wrap span:last-child{display:none}.nav{height:62px}.links{display:none;position:absolute;top:62px;left:0;right:0;background:var(--paper);padding:18px;flex-direction:column;border-bottom:1px solid var(--line)}.links.open{display:flex}.menu{display:block;border:1px solid var(--line);background:transparent;border-radius:8px;padding:8px 11px}.hero{padding:42px 0}.heroGrid{grid-template-columns:1fr}.art{height:200px}.section{padding:48px 0}.sectionHead{display:block}.sectionHead p{margin-top:12px}.atlasBody{grid-template-columns:1fr}.side{border-right:0;border-bottom:1px solid var(--line)}.records{grid-template-columns:1fr 1fr;max-height:190px}.record{padding:8px;gap:7px}.record b{font-size:11px}.record small{font-size:8px}.mapWrap{min-height:420px}.writerGrid{gap:9px}.writer{padding:13px}.adminGrid{grid-template-columns:1fr}.admin .wide{grid-column:auto}.foot{display:block}.foot div+div{margin-top:8px}}
@@ -59,14 +65,32 @@ footer{padding:25px 0;border-top:1px solid var(--line);font-size:10px;color:var(
 <label>Yayın yılı (biliniyorsa)<input id="year" type="number" min="1000" max="2100" placeholder="Örn. 1950"></label>
 <label class="wide">Metin / mekân ilişkisi<textarea id="description" required maxlength="1600" placeholder="Eserin bu mekânla ilişkisini, metindeki kanıtı ve araştırma notunu yaz…"></textarea></label>
 <label class="wide">Kısa alıntı (isteğe bağlı, telif sınırlarına dikkat)<textarea id="excerpt" maxlength="240" placeholder="Yalnızca kısa ve gerekli bir alıntı ekle…"></textarea></label>
-<label class="wide">Kaynak ve sayfa bilgisi<input id="source" maxlength="500" placeholder="Eser, yayınevi, baskı yılı, sayfa veya güvenilir bağlantı"></label>
+<label class="wide">Kaynak ve araştırma notu<input id="source" maxlength="500" placeholder="Kaynakla ilgili ek notlar"></label>
+<label>Kaynak eser / yayın başlığı<input id="sourceTitle" maxlength="240" placeholder="Kitap veya makale adı"></label>
+<label>Kaynak yazarı / kurum<input id="sourceAuthor" maxlength="180" placeholder="Yazar, yayınevi veya kurum"></label>
+<label>Yayınevi / yayın bilgisi<input id="publisher" maxlength="240" placeholder="Yayınevi, dergi veya katalog"></label>
+<label>Kaynak yayın yılı<input id="editionYear" type="number" min="1000" max="2100" placeholder="Örn. 2018"></label>
+<label>Sayfa / bölüm bilgisi<input id="pageReference" maxlength="120" placeholder="Örn. s. 42–45"></label>
+<label>Kaynak bağlantısı<input id="sourceUrl" type="url" maxlength="1000" placeholder="https://..."></label>
+<label class="wide">Mekânın metindeki kanıtı<textarea id="locationNote" maxlength="1200" placeholder="Bu mekânı eserle ilişkilendiren ifade, bağlam ve konum gerekçesi…"></textarea></label>
+<label>Yayın durumu<select id="status"><option value="draft" selected>Taslak</option><option value="ready">İncelemeye hazır</option><option value="published">Yayımla</option></select></label>
 </div><div class="adminActions"><button class="btn" type="submit" id="saveBtn">Kaydı ekle</button><button class="btn secondary" type="button" id="cancelEdit" hidden>Vazgeç</button></div></form>
-<div class="adminToolbar"><button class="btn secondary" type="button" id="exportData">Verileri yedekle (JSON)</button><label class="btn secondary" for="importData" style="display:inline-flex;align-items:center;cursor:pointer">Yedekten yükle</label><input id="importData" type="file" accept="application/json,.json" hidden><button class="btn secondary" type="button" id="logoutAdmin">Oturumu kapat</button></div>
-<div class="notice">Önemli: Bu statik sürümde kayıtlar yalnızca bu tarayıcıda saklanır. Yönetici parolası da tarayıcıda yerel olarak doğrulanır; bu gerçek sunucu güvenliği değildir. Ortak ve güvenli yönetim için sunucu taraflı kimlik doğrulama ve veri tabanı gerekir. JSON yedeğini düzenli indir.</div>
+<div class="adminToolbar">
+<button class="btn secondary" type="button" id="exportData">JSON yedeği indir</button>
+<label class="btn secondary" for="importData" style="display:inline-flex;align-items:center;cursor:pointer">JSON yedeğini yükle</label>
+<input id="importData" type="file" accept="application/json,.json" hidden>
+<button class="btn secondary" type="button" id="exportCSV">CSV dışa aktar</button>
+<button class="btn secondary" type="button" id="templateCSV">CSV şablonu indir</button>
+<label class="btn secondary" for="importCSV" style="display:inline-flex;align-items:center;cursor:pointer">CSV aktar</label>
+<input id="importCSV" type="file" accept=".csv,text/csv" hidden>
+<button class="btn secondary" type="button" id="logoutAdmin">Oturumu kapat</button>
+</div>
+<div class="notice">Kayıtlar ortak Supabase veritabanına kaydedilir. Taslaklar ve incelemeye hazır kayıtlar ziyaretçilere gösterilmez. CSV ile aktarılan yeni kayıtlar güvenlik için taslak başlar; JSON yedeği kayıt durumlarını korur.</div>
+<div id="importReport" class="notice" role="status" aria-live="polite"></div>
 <div class="sideTitle">Kayıt listesi</div><div id="adminRecords"></div></div></div></section>
 <section id="proje"><div class="wrap"><div class="sectionHead"><div><div class="kicker">Araştırma projesi</div><h2>Haritanın üzerinde değil,<br>şehrin içinde edebiyat.</h2></div><p>Bu dijital atlas, Sakarya'yı konu alan edebî metinlerdeki mekânları kaynaklarıyla inceleyip coğrafi verilerle eşleştirmeyi amaçlar. Belirsiz veya kurmaca mekânlar gerçek bir nokta gibi sunulmaz.</p></div></div></section>
 </main>
-<footer><div class="wrap foot"><div><b style="font:700 16px var(--serif);color:var(--brown)">Edebiyat Yanı Başında</b><br>Bir şehri, satırların izinde keşfet.</div><div>© 2026 · Sakarya pilot sürümü<br><button class="footerAdmin" id="adminEntry" type="button" onclick="var m=document.getElementById('adminLogin');m.style.display='flex';m.classList.add('open');">Yönetici girişi</button></div></div></footer>
+<footer><div class="wrap foot"><div><b style="font:700 16px var(--serif);color:var(--brown)">Edebiyat Yanı Başında</b><br>Bir şehri, satırların izinde keşfet.</div><div>© 2026 · Sakarya pilot sürümü<br><button class="footerAdmin" id="adminEntry" type="button">Yönetici girişi</button></div></div></footer>
 <div class="modalBack" id="modalBack"><article class="modal" role="dialog" aria-modal="true"><button class="close" id="closeModal" aria-label="Kapat">×</button><div class="meta" id="modalMeta"></div><h3 id="modalTitle"></h3><p id="modalDescription"></p><div class="source" id="modalSource"></div><div style="margin-top:12px"><button class="favBtn" id="favoriteBtn" type="button">☆ Keşiflerime kaydet</button></div><div class="adminActions" id="modalAdmin" hidden><button class="btn secondary" id="editRecord">Kaydı düzenle</button><button class="btn danger" id="deleteRecord">Kaydı sil</button></div></article></div>
 <div class="adminLogin" id="adminLogin"><div class="loginCard"><h3>Yönetici girişi</h3><p>Yönetim alanına devam etmek için GitHub hesabınla giriş yap.</p><p class="notice" id="loginStatus">Yalnızca yetkilendirilmiş hesaplar yönetim alanına erişebilir.</p><div class="loginActions"><button class="btn" id="githubLogin" type="button">GitHub ile giriş yap</button><button class="btn secondary" id="loginCancel" type="button">Kapat</button></div></div></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -89,67 +113,264 @@ const SUPABASE_KEY='sb_publishable_ZAw-F-eim4ndSJLTKsbyDw__xnLYmCh';
 const supabase=window.supabase?.createClient?window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY):null;
 let remoteRecordIds=[];
 let isAdmin=false;
+const allowedStatuses=['draft','ready','published'];
+const statusLabels={draft:'Taslak',ready:'İncelemeye hazır',published:'Yayımlandı'};
+const cleanStatus=v=>allowedStatuses.includes(v)?v:'published';
+const publicRecord=r=>!!r.sample||cleanStatus(r.status)==='published';
 async function loadRecords(){
-  records=starterRecords.map(x=>({...x}));
+  records=starterRecords.map(x=>({...x,status:'published'}));
+  if(!supabase){toast('Ortak kayıt bağlantısı başlatılamadı.');return false;}
   try{
     const {data,error}=await supabase.from('literary_records').select('*');
     if(error)throw error;
-    remoteRecordIds=(data||[]).map(x=>x.id);
-    records=records.concat((data||[]).map(x=>({...x,sample:false})));
-  }catch(e){console.error(e);toast('Ortak kayıtlar yüklenemedi: '+e.message);}
+    remoteRecordIds=(data||[]).map(x=>String(x.id));
+    records=records.concat((data||[]).map(x=>({...x,sample:false,status:cleanStatus(x.status)})));
+    return true;
+  }catch(e){console.error(e);toast('Ortak kayıtlar yüklenemedi: '+e.message);return false;}
 }
 async function saveRecords(){
+  if(!isAdmin||!supabase){toast('Kayıt için yetkili yönetici oturumu gerekli.');return false;}
   try{
-    localStorage.setItem('eyb-records',JSON.stringify(records));
-    if(!isAdmin)return;
-    const custom=records.filter(r=>!r.sample).map(r=>({id:String(r.id),title:r.title,author:r.author,type:r.type,place:r.place,lat:Number(r.lat),lng:Number(r.lng),description:r.description,source:r.source||null,accuracy:r.accuracy||null,year:r.year||null,excerpt:r.excerpt||null,sample:false}));
+    const custom=records.filter(r=>!r.sample).map(r=>({
+      id:String(r.id),title:r.title,author:r.author,type:r.type,place:r.place,
+      lat:Number(r.lat),lng:Number(r.lng),description:r.description,
+      source:r.source||null,accuracy:r.accuracy||null,year:r.year||null,
+      excerpt:r.excerpt||null,sample:false,status:cleanStatus(r.status),
+      source_title:r.sourceTitle||null,source_author:r.sourceAuthor||null,
+      publisher:r.publisher||null,edition_year:r.editionYear?Number(r.editionYear):null,
+      page_reference:r.pageReference||null,source_url:r.sourceUrl||null,
+      location_note:r.locationNote||null
+    }));
     if(custom.length){const {error}=await supabase.from('literary_records').upsert(custom,{onConflict:'id'});if(error)throw error;}
     const current=new Set(custom.map(r=>r.id));
-    const removed=remoteRecordIds.filter(id=>!current.has(id));
+    const removed=remoteRecordIds.filter(id=>!current.has(String(id)));
     if(removed.length){const {error}=await supabase.from('literary_records').delete().in('id',removed);if(error)throw error;}
     remoteRecordIds=custom.map(r=>r.id);
-  }catch(e){console.error(e);toast('Veritabanına kaydedilemedi: '+e.message);}
+    return true;
+  }catch(e){console.error(e);toast('Veritabanına kaydedilemedi: '+(e.message||String(e)));return false;}
 }
-function filtered(){return records.filter(r=>(activeType==='Tümü'||r.type===activeType)&&[r.title,r.author,r.place,r.type].join(' ').toLocaleLowerCase('tr').includes(query.toLocaleLowerCase('tr')))}
+function filtered(){return records.filter(r=>publicRecord(r)&&(activeType==='Tümü'||r.type===activeType)&&[r.title,r.author,r.place,r.type].join(' ').toLocaleLowerCase('tr').includes(query.toLocaleLowerCase('tr')))}
 function renderList(){const arr=filtered();$('count').textContent=arr.length;$('records').innerHTML=arr.length?arr.map(r=>`<button class="record ${selectedId===r.id?'selected':''}" data-id="${escapeHTML(r.id)}"><span class="symbol">${r.type==='Şiir'?'✦':r.type==='Öykü'?'❝':'▤'}</span><span><b>${escapeHTML(r.title)}</b><small>${escapeHTML(r.author)} · ${escapeHTML(r.type)}</small></span></button>`).join(''):'<p class="hint">Aramana uygun kayıt bulunamadı.</p>';$('records').querySelectorAll('[data-id]').forEach(b=>b.addEventListener('click',()=>openRecord(b.dataset.id,true)));}
 function renderMarkers(){if(!map)return;markers.forEach(m=>map.removeLayer(m));markers.clear();filtered().forEach(r=>{const icon=L.divIcon({className:'',html:`<div style="width:29px;height:29px;border:2px solid white;border-radius:50% 50% 50% 7px;transform:rotate(-45deg);background:${r.type==='Şiir'?'#9a7053':r.type==='Öykü'?'#687b62':'#8b657b'};box-shadow:0 3px 10px #0004"></div>`,iconSize:[29,29],iconAnchor:[14,27]});const m=L.marker([Number(r.lat),Number(r.lng)],{icon}).addTo(map).bindPopup(`<b>${escapeHTML(r.title)}</b><br>${escapeHTML(r.author)}<br><small>${r.sample?'Temsilî konum · doğrulama gerekli':'Kullanıcı kaydı'}</small>`);m.on('click',()=>openRecord(r.id,false));markers.set(r.id,m);});}
-function openRecord(id,pan){const r=records.find(x=>x.id===id);if(!r)return;selectedId=id;renderList();$('modalMeta').textContent=`${r.type} · ${r.author}`;$('modalTitle').textContent=r.title;$('modalDescription').textContent=r.description;$('modalSource').innerHTML=`<b>Mekân:</b> ${escapeHTML(r.place)}<br><b>Konum durumu:</b> ${escapeHTML(({verified:'Kaynakla doğrulandı',approx:'Yaklaşık konum',area:'Şehir / bölge ölçeği',symbolic:'Sembolik / temsili'}[r.accuracy]||'Doğrulama bekliyor'))}<br><b>Kaynak:</b> ${escapeHTML(r.source||'Kaynak bilgisi eklenmemiş.')}${r.year?`<br><b>Yayın yılı:</b> ${escapeHTML(r.year)}`:''}${r.excerpt?`<br><br><b>Kısa alıntı:</b> “${escapeHTML(r.excerpt)}”`:''}${r.sample?'<br><b>Uyarı:</b> Araştırma adayı; kesin koordinat değildir.':''}`;$('modalAdmin').hidden=!!r.sample;$('favoriteBtn').classList.toggle('saved',getFavorites().includes(r.id));$('favoriteBtn').textContent=getFavorites().includes(r.id)?'★ Keşiflerimden çıkar':'☆ Keşiflerime kaydet';$('modalBack').classList.add('open');if(pan&&map){map.setView([r.lat,r.lng],15);markers.get(id)?.openPopup();}}
+function openRecord(id,pan){
+  const r=records.find(x=>x.id===id);if(!r||!publicRecord(r))return;
+  selectedId=id;renderList();
+  $('modalMeta').textContent=`${r.type} · ${r.author}`;
+  $('modalTitle').textContent=r.title;$('modalDescription').textContent=r.description;
+  const safeUrl=/^https?:\/\//i.test(String(r.sourceUrl||''))?String(r.sourceUrl):'';
+  $('modalSource').innerHTML=
+    `<b>Mekân:</b> ${escapeHTML(r.place)}<br><b>Konum durumu:</b> ${escapeHTML(({verified:'Kaynakla doğrulandı',approx:'Yaklaşık konum',area:'Şehir / bölge ölçeği',symbolic:'Sembolik / temsili'}[r.accuracy]||'Doğrulama bekliyor'))}${r.locationNote?`<br><b>Mekân kanıtı:</b> ${escapeHTML(r.locationNote)}`:''}
+    <br><b>Kaynak:</b> ${escapeHTML(r.source||'Kaynak bilgisi eklenmemiş.')}
+    ${r.sourceTitle?`<br><b>Kaynak başlığı:</b> ${escapeHTML(r.sourceTitle)}`:''}
+    ${r.sourceAuthor?`<br><b>Kaynak yazarı / kurum:</b> ${escapeHTML(r.sourceAuthor)}`:''}
+    ${r.publisher?`<br><b>Yayın bilgisi:</b> ${escapeHTML(r.publisher)}`:''}
+    ${r.editionYear?`<br><b>Baskı yılı:</b> ${escapeHTML(r.editionYear)}`:''}
+    ${r.pageReference?`<br><b>Sayfa / bölüm:</b> ${escapeHTML(r.pageReference)}`:''}
+    ${safeUrl?`<br><b>Kaynak bağlantısı:</b> <a href="${escapeHTML(safeUrl)}" target="_blank" rel="noopener noreferrer">${escapeHTML(safeUrl)}</a>`:''}
+    ${r.year?`<br><b>Eser yılı:</b> ${escapeHTML(r.year)}`:''}
+    ${r.excerpt?`<br><br><b>Kısa alıntı:</b> “${escapeHTML(r.excerpt)}”`:''}
+    ${r.sample?'<br><b>Uyarı:</b> Araştırma adayı; kesin koordinat değildir.':''}`;
+  $('modalAdmin').hidden=!!r.sample;$('favoriteBtn').classList.toggle('saved',getFavorites().includes(r.id));
+  $('favoriteBtn').textContent=getFavorites().includes(r.id)?'★ Keşiflerimden çıkar':'☆ Keşiflerime kaydet';
+  $('modalBack').classList.add('open');if(pan&&map){map.setView([r.lat,r.lng],15);markers.get(id)?.openPopup();}
+}
 function closeModal(){$('modalBack').classList.remove('open')}
-function resetForm(){editingId=null;$('recordForm').reset();$('saveBtn').textContent='Kaydı ekle';$('cancelEdit').hidden=true;}
-function editSelected(){const r=records.find(x=>x.id===selectedId);if(!r||r.sample)return;editingId=r.id;for(const k of ['title','author','type','place','lat','lng','description','source','accuracy','year','excerpt'])$(k).value=r[k]??(k==='accuracy'?'approx':'');$('saveBtn').textContent='Değişiklikleri kaydet';$('cancelEdit').hidden=false;closeModal();$('icerik').scrollIntoView({behavior:'smooth'});}
+function resetForm(){editingId=null;$('recordForm').reset();$('status').value='draft';$('saveBtn').textContent='Taslağı kaydet';$('cancelEdit').hidden=true;}
+function editSelected(){
+  const r=records.find(x=>x.id===selectedId);if(!r||r.sample)return;
+  editingId=r.id;
+  const fields={title:'title',author:'author',type:'type',place:'place',lat:'lat',lng:'lng',description:'description',source:'source',accuracy:'accuracy',year:'year',excerpt:'excerpt',sourceTitle:'source_title',sourceAuthor:'source_author',publisher:'publisher',editionYear:'edition_year',pageReference:'page_reference',sourceUrl:'source_url',locationNote:'location_note',status:'status'};
+  Object.entries(fields).forEach(([id,key])=>$(id).value=r[key]??(id==='accuracy'?'approx':id==='status'?'published':''));
+  $('saveBtn').textContent='Değişiklikleri kaydet';$('cancelEdit').hidden=false;
+  $('icerik').scrollIntoView({behavior:'smooth'});
+}
 function initMap(){if(!window.L){$('mapFallback').style.display='grid';return;}try{map=L.map('map',{scrollWheelZoom:true}).setView([40.775,30.397],12);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors'}).addTo(map);renderMarkers();setTimeout(()=>map.invalidateSize(),300);$('resetMap').addEventListener('click',()=>map.flyTo([40.775,30.397],12));$('fullMap').addEventListener('click',()=>{const el=document.querySelector('.mapWrap');if(!document.fullscreenElement)el.requestFullscreen?.().then(()=>setTimeout(()=>map.invalidateSize(),200)).catch(()=>toast('Tam ekran açılamadı.'));else document.exitFullscreen?.().then(()=>setTimeout(()=>map.invalidateSize(),200));});document.addEventListener('fullscreenchange',()=>setTimeout(()=>map.invalidateSize(),200));}catch(e){$('mapFallback').style.display='grid';}}
 $('search').addEventListener('input',e=>{query=e.target.value;renderList();renderMarkers();});
 $('filters').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{activeType=b.dataset.type;$('filters').querySelectorAll('button').forEach(x=>x.classList.toggle('active',x===b));renderList();renderMarkers();}));
 $('locate').addEventListener('click',()=>{if(!navigator.geolocation){toast('Bu tarayıcı konum özelliğini desteklemiyor.');return;}if(!window.isSecureContext){toast('Konum izni için siteyi HTTPS üzerinden açmalısın.');return;}if(watchId!==null){navigator.geolocation.clearWatch(watchId);watchId=null;$('locate').textContent='◎ Konumumu bul';toast('Konum takibi durduruldu.');return;}$('locate').textContent='Konum aranıyor…';navigator.geolocation.getCurrentPosition(pos=>{const p=[pos.coords.latitude,pos.coords.longitude];if(!map){toast('Harita yüklenmedi; konum alınamadı.');return;}map.setView(p,15);if(userMarker)userMarker.setLatLng(p);else userMarker=L.circleMarker(p,{radius:9,color:'#fff',weight:3,fillColor:'#566c58',fillOpacity:1}).addTo(map).bindPopup('Şu anki konumun');userMarker.openPopup();$('locate').textContent='◎ Konum takibini durdur';toast('Konumun haritada gösterildi.');watchId=navigator.geolocation.watchPosition(next=>{const q=[next.coords.latitude,next.coords.longitude];userMarker?.setLatLng(q);},err=>toast('Konum güncellenemedi: '+err.message),{enableHighAccuracy:true,maximumAge:10000,timeout:20000});},err=>{$('locate').textContent='◎ Konumumu bul';const messages={1:'Konum izni verilmedi. Tarayıcı ayarlarından siteye konum izni ver.',2:'Konum bilgisi alınamadı. GPS ve internet bağlantını kontrol et.',3:'Konum isteği zaman aşımına uğradı. Yeniden dene.'};toast(messages[err.code]||err.message);},{enableHighAccuracy:true,maximumAge:0,timeout:20000});});
-$('recordForm').addEventListener('submit',e=>{e.preventDefault();const item={id:editingId||'user-'+Date.now(),title:$('title').value.trim(),author:$('author').value.trim(),type:$('type').value,place:$('place').value.trim(),lat:Number($('lat').value),lng:Number($('lng').value),description:$('description').value.trim(),source:$('source').value.trim(),accuracy:$('accuracy').value,year:$('year').value.trim(),excerpt:$('excerpt').value.trim(),sample:false};if(!Number.isFinite(item.lat)||!Number.isFinite(item.lng)){toast('Geçerli koordinatlar gir.');return;}const wasEditing=!!editingId;if(wasEditing){const i=records.findIndex(r=>r.id===editingId);if(i>=0)records[i]=item;}else records.push(item);saveRecords();resetForm();renderList();renderMarkers();renderAdminRecords();updateStats();toast(wasEditing?'Kayıt güncellendi.':'Yeni kayıt eklendi.');});
-$('cancelEdit').addEventListener('click',resetForm);$('editRecord').addEventListener('click',editSelected);$('deleteRecord').addEventListener('click',()=>{const r=records.find(x=>x.id===selectedId);if(!r||r.sample)return;if(!confirm('Bu kaydı silmek istediğine emin misin?'))return;records=records.filter(x=>x.id!==selectedId);saveRecords();selectedId=null;closeModal();renderList();renderMarkers();renderAdminRecords();updateStats();toast('Kayıt silindi.');});
+$('recordForm').addEventListener('submit',async e=>{
+  e.preventDefault();
+  if(!isAdmin){toast('Bu işlem için yönetici girişi gerekli.');return;}
+  const item={
+    id:editingId||'user-'+Date.now(),title:$('title').value.trim(),author:$('author').value.trim(),
+    type:$('type').value,place:$('place').value.trim(),lat:Number($('lat').value),lng:Number($('lng').value),
+    description:$('description').value.trim(),source:$('source').value.trim(),accuracy:$('accuracy').value,
+    year:$('year').value.trim(),excerpt:$('excerpt').value.trim(),sample:false,status:cleanStatus($('status').value),
+    sourceTitle:$('sourceTitle').value.trim(),sourceAuthor:$('sourceAuthor').value.trim(),
+    publisher:$('publisher').value.trim(),editionYear:$('editionYear').value.trim(),
+    pageReference:$('pageReference').value.trim(),sourceUrl:$('sourceUrl').value.trim(),
+    locationNote:$('locationNote').value.trim()
+  };
+  if(!Number.isFinite(item.lat)||!Number.isFinite(item.lng)||item.lat<-90||item.lat>90||item.lng<-180||item.lng>180){toast('Geçerli enlem ve boylam gir.');return;}
+  if(item.sourceUrl&&!/^https?:\/\//i.test(item.sourceUrl)){toast('Kaynak bağlantısı http:// veya https:// ile başlamalı.');return;}
+  const hasSource=!!(item.source||item.sourceTitle||item.sourceUrl);
+  if(item.status!=='draft'&&!hasSource){toast('İncelemeye göndermek için en az bir kaynak bilgisi ekle.');return;}
+  const previous=records.slice(),wasEditing=!!editingId;
+  if(item.status==='published'){
+    const old=wasEditing?previous.find(r=>r.id===editingId):null;
+    if(!old||cleanStatus(old.status)!=='ready'){toast('Bir kaydı yayımlamadan önce ayrı olarak “İncelemeye hazır” durumuna kaydetmelisin.');return;}
+  }
+  if(wasEditing){const i=records.findIndex(r=>r.id===editingId);if(i>=0)records[i]=item;}else records.push(item);
+  $('saveBtn').disabled=true;
+  const saved=await saveRecords();
+  $('saveBtn').disabled=false;
+  if(!saved){records=previous;renderAdminRecords();return;}
+  resetForm();renderList();renderMarkers();renderAdminRecords();updateStats();
+  toast(wasEditing?'Kayıt güncellendi.':'Kayıt veritabanına kaydedildi.');
+});
+$('cancelEdit').addEventListener('click',resetForm);$('editRecord').addEventListener('click',editSelected);
+$('deleteRecord').addEventListener('click',async()=>{
+  const r=records.find(x=>x.id===selectedId);if(!r||r.sample||!isAdmin)return;
+  if(!confirm('Bu kaydı veritabanından silmek istediğine emin misin?'))return;
+  const previous=records.slice();records=records.filter(x=>x.id!==selectedId);
+  const saved=await saveRecords();if(!saved){records=previous;return;}
+  selectedId=null;closeModal();renderList();renderMarkers();renderAdminRecords();updateStats();toast('Kayıt silindi.');
+});
 $('closeModal').addEventListener('click',closeModal);$('modalBack').addEventListener('click',e=>{if(e.target===$('modalBack'))closeModal();});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
 $('menuBtn').addEventListener('click',()=>$('navLinks').classList.toggle('open'));$('navLinks').querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>$('navLinks').classList.remove('open')));
 
 function getFavorites(){try{return JSON.parse(localStorage.getItem('eyb-favorites')||'[]')}catch(e){return []}}
 function setFavorites(a){localStorage.setItem('eyb-favorites',JSON.stringify(a));$('statFavorites').textContent=a.length}
-function updateStats(){$('statRecords').textContent=records.length;$('statAuthors').textContent=new Set(records.map(r=>r.author)).size;$('statFavorites').textContent=getFavorites().length}
-function renderAdminRecords(){const el=$('adminRecords');if(!el)return;el.innerHTML=records.map(r=>`<div style="display:flex;justify-content:space-between;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line);font-size:11px"><span><b>${escapeHTML(r.title)}</b><br><small>${escapeHTML(r.author)} · ${escapeHTML(r.place)}</small></span><span>${r.sample?'<small>Örnek kayıt</small>':`<button class="chip" data-admin-edit="${escapeHTML(r.id)}">Düzenle</button>`}</span></div>`).join('');el.querySelectorAll('[data-admin-edit]').forEach(b=>b.addEventListener('click',()=>{selectedId=b.dataset.adminEdit;editSelected()}))}
+function updateStats(){
+  const visible=records.filter(publicRecord);
+  $('statRecords').textContent=visible.length;
+  $('statAuthors').textContent=new Set(visible.map(r=>r.author)).size;
+  $('statFavorites').textContent=getFavorites().length;
+}
+function renderAdminRecords(){
+  const el=$('adminRecords');if(!el)return;
+  el.innerHTML=records.map(r=>{
+    if(r.sample)return `<div class="adminRecord"><span><b>${escapeHTML(r.title)}</b><small>${escapeHTML(r.author)} · Örnek araştırma kaydı</small></span><span class="statusBadge published">Örnek</span></div>`;
+    const state=cleanStatus(r.status);
+    return `<div class="adminRecord"><span><b>${escapeHTML(r.title)}</b><small>${escapeHTML(r.author)} · ${escapeHTML(r.place)}</small></span><span class="adminRecordActions"><span class="statusBadge ${state}">${statusLabels[state]}</span><button class="chip" data-admin-edit="${escapeHTML(r.id)}">Düzenle</button><button class="chip" data-admin-delete="${escapeHTML(r.id)}" aria-label="${escapeHTML(r.title)} kaydını sil">Sil</button></span></div>`;
+  }).join('');
+  el.querySelectorAll('[data-admin-edit]').forEach(b=>b.addEventListener('click',()=>{selectedId=b.dataset.adminEdit;editSelected()}));
+  el.querySelectorAll('[data-admin-delete]').forEach(b=>b.addEventListener('click',async()=>{
+    const id=b.dataset.adminDelete;
+    if(!confirm('Bu kaydı veritabanından silmek istediğine emin misin?'))return;
+    const previous=records.slice();records=records.filter(r=>String(r.id)!==String(id));
+    const saved=await saveRecords();
+    if(!saved){records=previous;renderAdminRecords();return;}
+    renderAdminRecords();renderList();renderMarkers();updateStats();toast('Kayıt silindi.');
+  }));
+}
 async function openAdminLogin(){
   $('adminLogin').classList.add('open');
   $('loginStatus').textContent='GitHub hesabınla giriş yapabilirsin.';
   if(!supabase){$('loginStatus').textContent='Giriş servisi yüklenemedi. Sayfayı yenileyip tekrar dene.';return;}
-  const {data:{session}}=await supabase.auth.getSession();
-  if(session)await verifyAdmin(session.user);
+  try{
+    const {data,error}=await supabase.auth.getSession();if(error)throw error;
+    if(data.session)await verifyAdmin(data.session.user);
+  }catch(e){$('loginStatus').textContent='Oturum kontrol edilemedi: '+(e.message||String(e));}
 }
 async function verifyAdmin(user){
-  const {data,error}=await supabase.from('site_admins').select('user_id').eq('user_id',user.id).maybeSingle();
-  if(error){$('loginStatus').textContent='Yetki kontrolü yapılamadı: '+error.message;return;}
-  if(!data){$('loginStatus').textContent='GitHub girişi başarılı; ancak bu hesap henüz yönetici olarak yetkilendirilmemiş. Kullanıcı kimliği: '+user.id;return;}
-  isAdmin=true;
-  $('adminLogin').classList.remove('open');
-  $('icerik').style.display='block';
-  $('adminPanel').classList.add('open');
-  await loadRecords();renderList();renderMarkers();renderAdminRecords();updateStats();
-  $('icerik').scrollIntoView({behavior:'smooth'});
-  toast('Yönetici girişi başarılı.');
+  try{
+    const {data,error}=await supabase.from('site_admins').select('user_id').eq('user_id',user.id).maybeSingle();
+    if(error)throw error;
+    if(!data){$('loginStatus').textContent='GitHub girişi başarılı; ancak bu hesap henüz yönetici olarak yetkilendirilmemiş. Kullanıcı kimliği: '+user.id;return;}
+    isAdmin=true;
+    $('adminLogin').classList.remove('open');
+    $('icerik').style.display='block';$('adminPanel').classList.add('open');
+    const loaded=await loadRecords();
+    if(!loaded){toast('Yönetici paneli açıldı fakat katalog verileri yüklenemedi.');return;}
+    renderList();renderMarkers();renderAdminRecords();updateStats();
+    $('icerik').scrollIntoView({behavior:'smooth'});
+    toast('Yönetici girişi başarılı.');
+  }catch(e){$('loginStatus').textContent='Yönetici yetkisi kontrol edilemedi: '+(e.message||String(e));}
 }
 $('adminEntry').addEventListener('click',openAdminLogin);
+$('exportData').addEventListener('click',()=>{
+  const payload={schemaVersion:2,exportedAt:new Date().toISOString(),records:records.filter(r=>!r.sample)};
+  downloadFile('edebiyat-yani-basinda-yedek.json',JSON.stringify(payload,null,2),'application/json;charset=utf-8');
+});
+$('exportCSV').addEventListener('click',()=>downloadCSV(records.filter(r=>!r.sample),'edebiyat-yani-basinda-kayitlar.csv'));
+$('templateCSV').addEventListener('click',()=>downloadCSV([],'edebiyat-yani-basinda-sablon.csv'));
+$('importCSV').addEventListener('change',async e=>{
+  const file=e.target.files&&e.target.files[0];e.target.value='';if(!file)return;
+  try{
+    const rows=parseCSV(await file.text());if(rows.length<2)throw new Error('CSV dosyasında başlık ve en az bir kayıt satırı bulunmalı.');
+    const headers=rows.shift().map(x=>String(x||'').trim().toLowerCase());
+    const get=(row,key)=>{const i=headers.indexOf(key);return i<0?'':String(row[i]??'').trim();};
+    const previous=records.slice(),knownSamples=new Set(starterRecords.map(x=>x.id));
+    const imported=[],errors=[];
+    rows.forEach((row,i)=>{
+      if(!row.some(x=>String(x||'').trim()))return;
+      const title=get(row,'title'),author=get(row,'author'),place=get(row,'place'),description=get(row,'description');
+      const lat=Number(get(row,'lat')),lng=Number(get(row,'lng'));
+      if(!title||!author||!place||!description||!Number.isFinite(lat)||!Number.isFinite(lng)||lat<-90||lat>90||lng<-180||lng>180){errors.push((i+2)+'. satır: başlık, yazar, mekân, açıklama ve geçerli koordinatlar gerekli.');return;}
+      let id=get(row,'id');if(!id||knownSamples.has(id))id='csv-'+Date.now()+'-'+i;
+      imported.push({
+        id,title,author,type:get(row,'type')||'Diğer',place,lat,lng,description,
+        source:get(row,'source'),accuracy:['verified','approx','area','symbolic'].includes(get(row,'accuracy'))?get(row,'accuracy'):'approx',
+        year:get(row,'year'),excerpt:get(row,'excerpt'),sample:false,status:'draft',
+        sourceTitle:get(row,'source_title'),sourceAuthor:get(row,'source_author'),publisher:get(row,'publisher'),
+        editionYear:get(row,'edition_year'),pageReference:get(row,'page_reference'),sourceUrl:get(row,'source_url'),
+        locationNote:get(row,'location_note')
+      });
+    });
+    if(!imported.length)throw new Error('Geçerli kayıt bulunamadı. '+errors.slice(0,3).join(' '));
+    const byId=new Map(records.filter(r=>!r.sample).map(r=>[String(r.id),r]));
+    imported.forEach(r=>byId.set(String(r.id),r));
+    records=[...starterRecords.map(x=>({...x,status:'published'})),...byId.values()];
+    const saved=await saveRecords();
+    if(!saved){records=previous;throw new Error('Veritabanına kaydedilemedi; mevcut kayıtlar geri yüklendi.');}
+    renderList();renderMarkers();renderAdminRecords();updateStats();
+    $('importReport').textContent=imported.length+' kayıt taslak olarak aktarıldı.'+(errors.length?' Atlanan satır: '+errors.length+'. '+errors.slice(0,3).join(' '):'');
+    toast(imported.length+' kayıt CSV ile aktarıldı.');
+  }catch(err){$('importReport').textContent='CSV aktarımı başarısız: '+(err.message||String(err));toast('CSV dosyası aktarılamadı.');}
+});
+$('importData').addEventListener('change',async e=>{
+  const file=e.target.files&&e.target.files[0];e.target.value='';if(!file)return;
+  try{
+    const parsed=JSON.parse(await file.text()),items=Array.isArray(parsed)?parsed:parsed.records;
+    if(!Array.isArray(items))throw new Error('Yedek dosyasında records listesi bulunamadı.');
+    const previous=records.slice(),knownSamples=new Set(starterRecords.map(x=>x.id));
+    const byId=new Map(records.filter(r=>!r.sample).map(r=>[String(r.id),r]));
+    let accepted=0;
+    items.forEach((r,i)=>{
+      if(!r||!r.title||!r.author||!r.place||!r.description)return;
+      const lat=Number(r.lat),lng=Number(r.lng);if(!Number.isFinite(lat)||!Number.isFinite(lng)||lat<-90||lat>90||lng<-180||lng>180)return;
+      let id=String(r.id||'');if(!id||knownSamples.has(id))id='json-'+Date.now()+'-'+i;
+      byId.set(id,{...r,id,lat,lng,sample:false,status:cleanStatus(r.status)});
+      accepted++;
+    });
+    if(!accepted)throw new Error('Yedekten alınabilecek geçerli kayıt bulunamadı.');
+    records=[...starterRecords.map(x=>({...x,status:'published'})),...byId.values()];
+    const saved=await saveRecords();
+    if(!saved){records=previous;throw new Error('Veritabanına kaydedilemedi; mevcut kayıtlar geri yüklendi.');}
+    renderList();renderMarkers();renderAdminRecords();updateStats();
+    $('importReport').textContent=accepted+' kayıt JSON yedeğinden geri yüklendi.';
+    toast('JSON yedeği geri yüklendi.');
+  }catch(err){$('importReport').textContent='Yedek yüklenemedi: '+(err.message||String(err));toast('JSON yedeği yüklenemedi.');}
+});
+function downloadFile(name,content,type){
+  const blob=new Blob([content],{type}),url=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+const CSV_FIELDS=['id','title','author','type','place','lat','lng','description','source','source_title','source_author','publisher','edition_year','page_reference','source_url','location_note','accuracy','year','excerpt','status'];
+function csvCell(v){const s=String(v??'');return /[",\r\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s;}
+function downloadCSV(items,name){
+  const rows=[CSV_FIELDS.join(','),...items.map(r=>[
+    r.id,r.title,r.author,r.type,r.place,r.lat,r.lng,r.description,r.source,r.sourceTitle||r.source_title,
+    r.sourceAuthor||r.source_author,r.publisher,r.editionYear||r.edition_year,r.pageReference||r.page_reference,
+    r.sourceUrl||r.source_url,r.locationNote||r.location_note,r.accuracy,r.year,r.excerpt,cleanStatus(r.status)
+  ].map(csvCell).join(','))];
+  downloadFile(name,'\ufeff'+rows.join('\r\n'),'text/csv;charset=utf-8');
+}
+function parseCSV(input){
+  const textValue=String(input||'').replace(/^\uFEFF/,'');
+  const rows=[];let row=[],cell='',quoted=false;
+  for(let i=0;i<textValue.length;i++){
+    const ch=textValue[i],next=textValue[i+1];
+    if(quoted){if(ch==='"'&&next==='"'){cell+='"';i++;}else if(ch==='"'){quoted=false;}else cell+=ch;}
+    else if(ch==='"'&&cell==='')quoted=true;
+    else if(ch===','){row.push(cell);cell='';}
+    else if(ch==='\n'){row.push(cell.replace(/\r$/,''));rows.push(row);row=[];cell='';}
+    else cell+=ch;
+  }
+  if(cell.length||row.length){row.push(cell.replace(/\r$/,''));rows.push(row);}
+  return rows;
+}
 $('githubLogin').addEventListener('click',async()=>{
   const button=$('githubLogin');
   if(!supabase){$('loginStatus').textContent='Supabase giriş kütüphanesi yüklenemedi. Sayfayı yenile veya bağlantını kontrol et.';return;}
